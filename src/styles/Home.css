@@ -1,0 +1,36 @@
+* {
+  border: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(230, 215, 195);
+  color: black;
+}
+
+.centro {
+  display: grid;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  justify-items: center;
+}
+
+.center-container {
+  width: 100%;
+}
+
+
+@media (max-width: 600px) {
+  main {
+    grid-template-columns: 100% 0;
+  }
+}
