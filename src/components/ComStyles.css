@@ -131,7 +131,7 @@
     background-color: #303030;
     color: white;
     bottom: -150%;
-    right: -20%;
+    right: 0;
     text-align: center;
     border: 1px solid black;
     border-radius: 10px;
@@ -363,7 +363,7 @@
     left: 5%;
 }
 .up-edit-btn {
-    width: 80%;
+    width: 60%;
     height: 3rem;
     font-size: 0.75rem;
     background-color: transparent;
@@ -428,5 +428,5 @@
 
 .posts-container {
     min-height: 100px;
-    background-color: white;
+    background-color: #cfcf7b;
 }

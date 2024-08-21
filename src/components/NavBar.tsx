@@ -12,6 +12,8 @@ interface Props {
 const NavBar: React.FC<Props> = ({ logueado }) => {
   const [rotacion, setRotacion] = useState<number>(0);
   const [cooldown, setCooldown] = useState<boolean>(false);
+  const [menuAbierto,setMenuAbierto] = useState<boolean>(false);
+  const AbrirMenu = () => {setMenuAbierto(!menuAbierto)}
 
   const RotacionInfinita = () => {
     if (cooldown) return;
@@ -28,6 +30,7 @@ const NavBar: React.FC<Props> = ({ logueado }) => {
   return (
     <div className='nv-nav-bar'>
       <div className='nv-icon-container'>
+        <Link to="/pages/Home">
         <svg
           onMouseOut={RotacionInfinita}
           className="nv-icon cursor"
@@ -43,6 +46,7 @@ const NavBar: React.FC<Props> = ({ logueado }) => {
         >
           <path d="M.011 0v8.406H8.61V0zm15.39 0v8.406H24V0zM8.972.658l.012 7.869 2.54 2.43.007-5.564zm6.066 0-2.555 4.735.004 5.564 2.54-2.43zM.332 8.768l5.52 2.677 5.655-.006-2.773-2.67zm14.944 0L12.53 11.49l5.655-.09 5.498-2.631zm-9.323 3.855L.318 15.232h8.405l2.748-2.722zm6.565-.113 2.747 2.722h8.402l-5.586-2.609zm-1.006.533-2.54 2.43-.011 7.873 2.555-4.74zm.964 0-.008 5.564 2.559 4.74-.011-7.874zM0 15.598V24h8.598v-8.402zm15.39 0V24h8.598v-8.402z"></path>
         </svg>
+        </Link>
       </div>
 
       <div className='nv-search-bar'>
@@ -55,12 +59,12 @@ const NavBar: React.FC<Props> = ({ logueado }) => {
           <FaBell color='#FDFD96' className='nv-user-button nv-bell cursor'/>
           <AiFillMessage color='#FDFD96' className='nv-user-button cursor'/>
           <div className='nv-mini-menu'>
-            <img className='nv-user-button nv-pfp cursor' src='https://i.pinimg.com/originals/37/8a/27/378a270e775265622393da8c0527417e.jpg'/>
-            <span className='nv-user-config'>
+            <img onClick={AbrirMenu} className='nv-user-button nv-pfp cursor' src='https://i.pinimg.com/originals/37/8a/27/378a270e775265622393da8c0527417e.jpg'/>
+            <span className='nv-user-config' style={menuAbierto? {}:{display:'none'}}>
             <Link to="/pages/Profile">
               <ul>Perfil</ul>
             </Link>
-            <ul>Cerrar Sesion</ul>
+            <ul >Cerrar Sesion</ul>
             </span>
           </div>
         </div>
