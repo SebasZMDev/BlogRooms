@@ -23,7 +23,7 @@ const Home:React.FC<Props> = ({isLogin}) => {
         <div className='center-container'>
           <CreatePost logueado={isLogin}/>
           <UserFeed>
-            
+
           </UserFeed>
         </div>
         <Frases/>

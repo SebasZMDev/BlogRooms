@@ -1,5 +1,5 @@
 import "../styles/Login.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type UserType = {
   id: string;
@@ -27,7 +27,11 @@ type PostData = {
 };
 
 const Login = () => {
-  const [usersList, setUsersList] = useState<UserType[]>([]);
+  // DECLARACION DE DATOS
+  const [usersList, setUsersList] = useState<UserType[]>(() => {
+    const savedUsers = localStorage.getItem('usersList');
+    return savedUsers ? JSON.parse(savedUsers) : [];
+  });
   const [haveAccount, setHaveAccount] = useState<boolean>(true);
   const [emailVal, setEmailVal] = useState<string>('');
   const [nameVal, setNameVal] = useState<string>('');
@@ -38,21 +42,36 @@ const Login = () => {
     setHaveAccount(!haveAccount)
   }
 
+    //  CREACION DE CUENTA
   const InputChange = (tipo:string, e:React.ChangeEvent<HTMLInputElement>) =>{
-
-    if (tipo=="email") {
-      setEmailVal(e.target.value)
-
-    }if (tipo=="username") {
-      setNameVal(e.target.value)
+    if (tipo === "email") {
+      setEmailVal(e.target.value);
     }
-    if (tipo=="password") {
-      setPasswordVal(e.target.value)
+    if (tipo === "username") {
+      setNameVal(e.target.value);
+    }
+    if (tipo === "password") {
+      setPasswordVal(e.target.value);
     }
   }
-
   const CreateUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const regex = /^[a-zA-Z0-9_]+$/;
+    if (!regex.test(nameVal)) {
+      setErrorMsg('El nombre solo puede contener letras, números y guiones bajos.');
+      return;
+    }
+    if (emailVal.length<6){
+      setErrorMsg('emil minimo: 6 caracteres')
+      return
+    }if (nameVal.length<3){
+      setErrorMsg('nombre minimo: 3 caracteres')
+      return
+    }
+    if (passwordVal.length<5){
+      setErrorMsg('contraseña minimo: 5 caracteres')
+      return
+    }
     const emailExists = usersList.some((usersList)=>usersList.email==emailVal)
     const nameExists = usersList.some((usersList)=>usersList.username==nameVal)
     if (emailExists) {
@@ -63,8 +82,7 @@ const Login = () => {
       setErrorMsg("El nombre ya existe")
       return;
     }
-
-
+    setErrorMsg('')
     const user: UserType = {
       id: ("U" + usersList.length),
       email: emailVal,
@@ -81,8 +99,11 @@ const Login = () => {
     console.log(user)
     setUsersList(prevList => [...prevList, user]);
   }
+  useEffect(() => {
+    localStorage.setItem('usersList', JSON.stringify(usersList));
+  }, [usersList]);
 
-
+  // LOGUEO DE CUENTA
 
   return (
     <div className="mega-container" style={{ backgroundColor: "#303030" }}>
@@ -136,7 +157,7 @@ const Login = () => {
               <input onChange={(e)=>InputChange('username', e)} type="text" placeholder="Username"></input>
               <input onChange={(e)=>InputChange('password', e)} type="password" placeholder="Password"></input>
               <button type="submit">Registrarse</button>
-              <h6 style={{color:'red', marginTop:'15px'}}>{errorMsg}</h6>
+              <p style={{color:'red', fontSize:'10px', maxWidth:'150px', margin:'auto'}}>{errorMsg}</p>
             </form>
             <div className="sign-up centro">
               <h5>O prefieres</h5>
