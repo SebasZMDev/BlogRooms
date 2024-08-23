@@ -1,60 +1,94 @@
 import "../styles/Login.css";
 import { useState } from "react";
-import Post from '../components/Post'
+
+type UserType = {
+  id: string;
+  email: string;
+  username: string;
+  password: string;
+  userInfo: UserInfo;
+};
+
+type UserInfo = {
+  pfp: string;
+  banner: string;
+  description: string;
+  posts: PostData[];
+  likes: PostData[];
+};
+
+type PostData = {
+  id: string;
+  title: string;
+  content: string;
+  score: number;
+  repost: number;
+  comments: string;
+};
 
 const Login = () => {
+  const [usersList, setUsersList] = useState<UserType[]>([]);
   const [haveAccount, setHaveAccount] = useState<boolean>(true);
+  const [emailVal, setEmailVal] = useState<string>('');
+  const [nameVal, setNameVal] = useState<string>('');
+  const [passwordVal, setPasswordVal] = useState<string>('');
+  const [errorMsg, setErrorMsg] = useState<string>('');
 
   const SignOrLog = () => {
     setHaveAccount(!haveAccount)
   }
 
-  type UserType = {
-    mail: string;
-    numero: number;
-    username: string;
-    password: string;
-    userInfo: UserInfo;
-  };
-
-  type UserInfo = {
-    pfp: string;
-    banner: string;
-    description: string;
-    posts: PostData[];
-    likes: PostData[];
-  };
-
-  type PostData = {
-    id: number;
-    title: string;
-    content: string;
-    score: number;
-    repost: number;
-    comments: string;
-
-  };
-
   const InputChange = (tipo:string, e:React.ChangeEvent<HTMLInputElement>) =>{
+
     if (tipo=="email") {
-      console.log(tipo, e.target.value)
+      setEmailVal(e.target.value)
+
     }if (tipo=="username") {
-      console.log(tipo, e.target.value)
+      setNameVal(e.target.value)
     }
     if (tipo=="password") {
-      console.log(tipo, e.target.value)
-    }
-    if (tipo=="email") {
-      console.log(tipo, e.target.value)
+      setPasswordVal(e.target.value)
     }
   }
 
+  const CreateUser = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const emailExists = usersList.some((usersList)=>usersList.email==emailVal)
+    const nameExists = usersList.some((usersList)=>usersList.username==nameVal)
+    if (emailExists) {
+      setErrorMsg("El correo ya existe")
+      return;
+    }
+    if (nameExists) {
+      setErrorMsg("El nombre ya existe")
+      return;
+    }
+
+
+    const user: UserType = {
+      id: ("U" + usersList.length),
+      email: emailVal,
+      username: nameVal,
+      password: passwordVal,
+      userInfo: {
+        pfp: "../images/default-pfp.jpg",
+        banner: "../images/default-banner.jpg",
+        description: "",
+        posts: [],
+        likes: []
+      }
+    };
+    console.log(user)
+    setUsersList(prevList => [...prevList, user]);
+  }
+
+
 
   return (
-    <>
-      <div className="general-container" style={{ backgroundColor: "#303030" }}>
+    <div className="mega-container" style={{ backgroundColor: "#303030" }}>
+      <div className="general-container" >
         <div className="logo-container">
-          <div className="centro icon" style={{ color: "#FDFD96" }}>
+          <div className="centro icon" style={{ color: "#FDFD96" }} onClick={()=>console.log(usersList)}>
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -84,7 +118,7 @@ const Login = () => {
           <div className="login-container centro">
             <form className="login-form">
               <h2>BlogRooms</h2>
-              <input placeholder="Phone number, username or email"></input>
+              <input placeholder="Username or email"></input>
               <input placeholder="Password"></input>
               <button>Entrar</button>
               <a>Olvidaste la contraseña?</a>
@@ -96,13 +130,13 @@ const Login = () => {
           </div>
         ) : (
           <div className="sign-up-container centro">
-            <form className="sign-up-form">
+            <form className="sign-up-form" onSubmit={CreateUser}>
               <h2>BlogRooms</h2>
-              <input onChange={(e)=>InputChange('email', e)} placeholder="Email"></input>
-              <input onChange={(e)=>InputChange('username', e)} placeholder="Username"></input>
-              <input onChange={(e)=>InputChange('password', e)} placeholder="Password"></input>
-              <input onChange={(e)=>InputChange('email', e)} placeholder="Confirm password"></input>
-              <button>Entrar</button>
+              <input onChange={(e)=>InputChange('email', e)} type="email" placeholder="Email"></input>
+              <input onChange={(e)=>InputChange('username', e)} type="text" placeholder="Username"></input>
+              <input onChange={(e)=>InputChange('password', e)} type="password" placeholder="Password"></input>
+              <button type="submit">Registrarse</button>
+              <h6 style={{color:'red', marginTop:'15px'}}>{errorMsg}</h6>
             </form>
             <div className="sign-up centro">
               <h5>O prefieres</h5>
@@ -111,7 +145,7 @@ const Login = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
