@@ -3,14 +3,11 @@ import { useState } from 'react';
 import { FaImage } from "react-icons/fa";
 import { MdGifBox } from "react-icons/md";
 import { FaPoll } from "react-icons/fa";
-
-interface Props {
-    logueado: boolean;
-}
+import { useUser } from '../App';
 
 
-const CreatePost: React.FC<Props> = ({logueado}) => {
-
+const CreatePost = () => {
+    const {user, isUserLogged} = useUser();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const HandleChanges = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -23,9 +20,9 @@ const CreatePost: React.FC<Props> = ({logueado}) => {
     }
 
     return(
-        <div className='crp-container'  style={{ display: logueado ? '' : 'none' }}>
+        <div className='crp-container'  style={{ display: isUserLogged ? '' : 'none' }}>
             <div className='crp-layout-top'>
-                <img className='crp-pfp cursor' src='https://i.pinimg.com/originals/37/8a/27/378a270e775265622393da8c0527417e.jpg'/>
+                <img className='crp-pfp cursor'  src={user?user.userInfo.pfp:''}/>
                 <textarea maxLength={300} onChange={HandleChanges} className='crp-text-area' placeholder='Escribe algo. . .'/>
             </div>
 

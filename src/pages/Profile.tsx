@@ -7,7 +7,7 @@ import UserPosts from '../components/UserPosts';
 const Profile = () =>{
     return (
         <>
-        <NavBar logueado={true}/>
+        <NavBar/>
         <main>
             <Frases/>
             <div className='user-profile-display'>

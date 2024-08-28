@@ -4,28 +4,27 @@ import { useState } from 'react';
 import { HiSearch } from "react-icons/hi";
 import { FaBell } from "react-icons/fa";
 import { AiFillMessage } from "react-icons/ai";
+import { useUser } from '../App';
 
-interface Props {
-  logueado: boolean;
-}
 
-const NavBar: React.FC<Props> = ({ logueado }) => {
+const NavBar = () => {
+  const {user, isUserLogged} = useUser();
   const [rotacion, setRotacion] = useState<number>(0);
   const [cooldown, setCooldown] = useState<boolean>(false);
   const [menuAbierto,setMenuAbierto] = useState<boolean>(false);
   const AbrirMenu = () => {setMenuAbierto(!menuAbierto)}
-
   const RotacionInfinita = () => {
     if (cooldown) return;
-
     setRotacion(prevRotacion => prevRotacion + 90);
     if (rotacion === 9000) {
       setRotacion(0);
     }
     setCooldown(true);
-
     setTimeout(() => setCooldown(false), 750);
   };
+
+  console.log(user?user.userInfo.pfp:'')
+  console.log(isUserLogged)
 
   return (
     <div className='nv-nav-bar'>
@@ -54,12 +53,12 @@ const NavBar: React.FC<Props> = ({ logueado }) => {
         <HiSearch color='#FDFD96' className='nv-search-icon cursor'/>
       </div>
 
-      {logueado ? (
+      {isUserLogged ? (
         <div className='nv-user-buttons-display'>
           <FaBell color='#FDFD96' className='nv-user-button nv-bell cursor'/>
           <AiFillMessage color='#FDFD96' className='nv-user-button cursor'/>
           <div className='nv-mini-menu'>
-            <img onClick={AbrirMenu} className='nv-user-button nv-pfp cursor' src='https://i.pinimg.com/originals/37/8a/27/378a270e775265622393da8c0527417e.jpg'/>
+            <img onClick={AbrirMenu} className='nv-user-button nv-pfp cursor' src={user?user.userInfo.pfp:''}/>
             <span className='nv-user-config' style={menuAbierto? {}:{display:'none'}}>
             <Link to="/pages/Profile">
               <ul>Perfil</ul>

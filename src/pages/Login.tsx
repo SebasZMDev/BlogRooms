@@ -1,47 +1,29 @@
 import "../styles/Login.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../App';
+import { UserType } from '../App'
 
-type UserType = {
-  id: string;
-  email: string;
-  username: string;
-  password: string;
-  userInfo: UserInfo;
-};
-
-type UserInfo = {
-  pfp: string;
-  banner: string;
-  description: string;
-  posts: PostData[];
-  likes: PostData[];
-};
-
-type PostData = {
-  id: string;
-  title: string;
-  content: string;
-  score: number;
-  repost: number;
-  comments: string;
-};
 
 const Login = () => {
-  // DECLARACION DE DATOS
-  const [usersList, setUsersList] = useState<UserType[]>(() => {
-    const savedUsers = localStorage.getItem('usersList');
-    return savedUsers ? JSON.parse(savedUsers) : [];
-  });
+  const {user, setUser} = useUser()
+  //const [actualUser, setActualUser] = useState<UserType>()
+  const [usersList, setUsersList] = useState<UserType[]>(
+    () => {
+      const savedUsers = localStorage.getItem('usersList');
+      return savedUsers ? JSON.parse(savedUsers) : [];
+    }
+  );
   const [haveAccount, setHaveAccount] = useState<boolean>(true);
   const [emailVal, setEmailVal] = useState<string>('');
   const [nameVal, setNameVal] = useState<string>('');
   const [passwordVal, setPasswordVal] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const navigate = useNavigate();
 
   const SignOrLog = () => {
     setHaveAccount(!haveAccount)
   }
-
     //  CREACION DE CUENTA
   const InputChange = (tipo:string, e:React.ChangeEvent<HTMLInputElement>) =>{
     if (tipo === "email") {
@@ -61,55 +43,58 @@ const Login = () => {
       setErrorMsg('El nombre solo puede contener letras, números y guiones bajos.');
       return;
     }
-    if (emailVal.length<6){
-      setErrorMsg('emil minimo: 6 caracteres')
-      return
-    }if (nameVal.length<3){
-      setErrorMsg('nombre minimo: 3 caracteres')
-      return
+    if (emailVal.length < 6) {
+      setErrorMsg('El email debe tener al menos 6 caracteres');
+      return;
     }
-    if (passwordVal.length<5){
-      setErrorMsg('contraseña minimo: 5 caracteres')
-      return
+    if (passwordVal.length < 5) {
+      setErrorMsg('La contraseña debe tener al menos 5 caracteres');
+      return;
     }
-    const emailExists = usersList.some((usersList)=>usersList.email==emailVal)
-    const nameExists = usersList.some((usersList)=>usersList.username==nameVal)
+    if (nameVal.length < 3) {
+      setErrorMsg('El nombre debe tener al menos 3 caracteres');
+      return;
+    }
+    const emailExists = usersList.some(user => user.email === emailVal);
+    const nameExists = usersList.some(user => user.username === nameVal);
     if (emailExists) {
-      setErrorMsg("El correo ya existe")
+      setErrorMsg("El correo ya existe");
       return;
     }
     if (nameExists) {
-      setErrorMsg("El nombre ya existe")
+      setErrorMsg("El nombre ya existe");
       return;
     }
-    setErrorMsg('')
-    const user: UserType = {
-      id: ("U" + usersList.length),
+    setErrorMsg('');
+    const newUser: UserType = {
+      id: "U" + (usersList.length + 1),
       email: emailVal,
       username: nameVal,
       password: passwordVal,
       userInfo: {
-        pfp: "../images/default-pfp.jpg",
-        banner: "../images/default-banner.jpg",
+        pfp: ".././src/images/default-pfp.jpg",
+        banner: ".././src/images/default-banner.jpg",
         description: "",
         posts: [],
         likes: []
       }
     };
-    console.log(user)
-    setUsersList(prevList => [...prevList, user]);
-  }
-  useEffect(() => {
-    localStorage.setItem('usersList', JSON.stringify(usersList));
-  }, [usersList]);
 
-  // LOGUEO DE CUENTA
+    const updatedUsersList = [...usersList, newUser];
+    setUsersList(updatedUsersList);
+    setUser(newUser);
+    localStorage.setItem('usersList', JSON.stringify(updatedUsersList));
+    localStorage.setItem('actualUser', JSON.stringify(newUser));
+    navigate('/pages/Home', { state: { refresh: true } });
+    window.location.reload();
+  };
+
 
   return (
     <div className="mega-container" style={{ backgroundColor: "#303030" }}>
       <div className="general-container" >
         <div className="logo-container">
-          <div className="centro icon" style={{ color: "#FDFD96" }} onClick={()=>console.log(usersList)}>
+          <div className="centro icon" style={{ color: "#FDFD96" }} onClick={()=>console.log(user)}>
             <svg
               stroke="currentColor"
               fill="currentColor"
