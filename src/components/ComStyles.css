@@ -142,7 +142,14 @@
     font-size: 0.75rem;
     padding: 0;
     padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
 }
+
+.nv-user-config ul:hover {
+    box-shadow: 0 0 15px 10px inset #202020;
+}
+
 
 
 @media (max-width: 600px) {
@@ -332,12 +339,16 @@
 
 /*      USER PROFILE        */
 
+
+.relative {
+    position: relative;
+}
+
 .user-profile-display {
     width: 100%;
     display: grid;
     justify-items: center;
 }
-
 
 .up-general-container{
     width: 90%;
@@ -387,11 +398,104 @@
     width: 95%;
     display: grid;
     margin: 10px;
+    min-height: 50px;
 }
 .up-post-container{
     width: 100%;
     display: grid;
 }
+
+.edit-up-banner{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    filter: opacity(0%);
+    display: grid;
+}
+
+.edit-up-banner-text{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    display: grid;
+    text-align: center;
+    align-items: center;
+    background-color: #202020;
+    color: white;
+    filter: opacity(50%);
+}
+
+.edit-up-pfp{
+    position: absolute;
+    top: 0;
+    background-color: transparent;
+    filter: opacity(0%);
+    width: 125px;
+    height: 125px;
+    display: grid;
+    border-radius: 100%;
+    left: 5%;
+}
+
+.edit-up-pfp-text{
+    position: absolute;
+    top: 0;
+    width: 125px;
+    height: 125px;
+    display: grid;
+    border-radius: 100%;
+    left: 5%;
+    text-align: center;
+    align-items: center;
+    background-color: #202020;
+    color: white;
+    filter: opacity(50%);
+}
+
+.edit-up-desc{
+    position: absolute;
+    top: 0;
+    color: #202020;
+    background: transparent;
+    border: 0.5px solid #4B3A32;
+    border-radius: 5px;
+    width: 95%;
+    display: grid;
+    margin: 10px;
+    min-height: 50px;
+}
+
+.up-edit-buttons-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-content: center;
+    justify-items: center;
+    width: 150px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: grid;
+    justify-self: end;
+    margin-right: 25px;
+    overflow: hidden;
+}
+
+.up-edit-buttons {
+    height: 100%;
+    width: 100%;
+}
+
+.up-edit-buttons:first-child {
+    border-right: 1px solid black;
+}
+
+.up-edit-buttons:hover {
+    background-color: #cfcf7b;
+}
+
+
 
 .posts-general-container {
     width: 90%;

@@ -1,17 +1,17 @@
 import './ComStyles.css';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { HiSearch } from "react-icons/hi";
 import { FaBell } from "react-icons/fa";
-import { AiFillMessage } from "react-icons/ai";
 import { useUser } from '../App';
 
 
 const NavBar = () => {
-  const {user, isUserLogged} = useUser();
+  const {user, setUser, isUserLogged, setIsUserLogged} = useUser();
   const [rotacion, setRotacion] = useState<number>(0);
   const [cooldown, setCooldown] = useState<boolean>(false);
   const [menuAbierto,setMenuAbierto] = useState<boolean>(false);
+  const navigate = useNavigate();
   const AbrirMenu = () => {setMenuAbierto(!menuAbierto)}
   const RotacionInfinita = () => {
     if (cooldown) return;
@@ -23,8 +23,14 @@ const NavBar = () => {
     setTimeout(() => setCooldown(false), 750);
   };
 
-  console.log(user?user.userInfo.pfp:'')
-  console.log(isUserLogged)
+  const CerrarSesion = () =>{
+    console.log('waaa')
+    setUser(null)
+    setIsUserLogged(false)
+    localStorage.removeItem('actualUser');
+    navigate('/pages/Login')
+    window.location.reload()
+  }
 
   return (
     <div className='nv-nav-bar'>
@@ -56,14 +62,13 @@ const NavBar = () => {
       {isUserLogged ? (
         <div className='nv-user-buttons-display'>
           <FaBell color='#FDFD96' className='nv-user-button nv-bell cursor'/>
-          <AiFillMessage color='#FDFD96' className='nv-user-button cursor'/>
           <div className='nv-mini-menu'>
             <img onClick={AbrirMenu} className='nv-user-button nv-pfp cursor' src={user?user.userInfo.pfp:''}/>
             <span className='nv-user-config' style={menuAbierto? {}:{display:'none'}}>
             <Link to="/pages/Profile">
               <ul>Perfil</ul>
             </Link>
-            <ul >Cerrar Sesion</ul>
+            <ul onClick={CerrarSesion}>Cerrar Sesion</ul>
             </span>
           </div>
         </div>

@@ -15,6 +15,10 @@ hr {
   width: 100%;
 }
 
+.mega-container {
+  padding-bottom: 50px;
+}
+
 .centro {
   display: grid;
   align-items: center;
@@ -22,6 +26,53 @@ hr {
   justify-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.ultra-container {
+  position: relative;;
+}
+
+.load-screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #303030;
+  display: grid;
+  justify-items: center;
+  justify-content: center;
+  margin: auto;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.load-div {
+  display: grid;
+  color: #FDFD96;
+}
+
+.load-div svg{
+  animation: LoadIcon 2s ease-in-out 0.25s infinite;
+}
+
+.load-div h5 {
+  position: relative;
+  top: 30px;
+  font-size: 20px;
+}
+
+@keyframes LoadIcon {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.75);
+  }
+  50% {
+    transform: scale(0.75) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(180deg);
+  }
 }
 
 .general-container {
@@ -54,6 +105,8 @@ hr {
 .login-form {
   width: 100%;
   height: 100%;
+  min-height: 244px;
+  min-width: 244px;
   margin: 25px;
   padding: 30px;
   display: grid;
@@ -163,6 +216,8 @@ hr {
 .sign-up-form {
   width: 100%;
   height: 100%;
+  min-height: 244px;
+  min-width: 244px;
   margin: 25px;
   padding: 30px;
   display: grid;
@@ -211,26 +266,26 @@ hr {
   }
   20% {
     color: transparent;
-    text-shadow: -5px -5px 1.25px black;
-    box-shadow: -5px -5px 4px 5px inset #47472a;
+    text-shadow: -4px -4px 1.25px black;
+    box-shadow: -4px -4px 4px 5px inset #47472a;
     border: 1px solid #47472a;
   }
   40% {
     color: transparent;
-    text-shadow: 5px -5px 1.25px black;
-    box-shadow: 5px -5px 4px 5px inset #47472a;
+    text-shadow: 4px -4px 1.25px black;
+    box-shadow: 4px -4px 4px 5px inset #47472a;
     border: 1px solid #47472a;
   }
   60% {
     color: transparent;
-    text-shadow: 5px 5px 1.25px black;
-    box-shadow: 5px 5px 4px 5px inset #47472a;
+    text-shadow: 4px 4px 1.25px black;
+    box-shadow: 4px 4px 4px 5px inset #47472a;
     border: 1px solid #47472a;
   }
   80% {
     color: transparent;
-    text-shadow: -5px 5px 1.25px black;
-    box-shadow: -5px 5px 4px 5px inset #96965b;
+    text-shadow: -4px 4px 1.25px black;
+    box-shadow: -4px 4px 4px 5px inset #96965b;
     border: 1px solid #47472a;
   }
   100% {

@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
@@ -23,6 +23,7 @@ export type PostData = {
   id: string;
   title: string;
   content: string;
+  media: string | null;
   score: number;
   repost: number;
   comments: string;
@@ -33,6 +34,7 @@ export type UserContextType = {
   user: UserType | null;
   setUser: (user: UserType | null) => void;
   isUserLogged: boolean;
+  setIsUserLogged: (isLogged: boolean) => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -51,7 +53,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, isUserLogged}}>
+    <UserContext.Provider value={{ user, setUser, isUserLogged, setIsUserLogged}}>
       {children}
     </UserContext.Provider>
   );
