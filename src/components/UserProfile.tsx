@@ -39,12 +39,12 @@ const UserProfile = () => {
                 <input className="edit-up-pfp" type='File'  style={{display:editMode?'':'none'}}/>
               </div>
               {editMode?
-              (<button className="up-edit-btn" onClick={EnableEditMode}>Editar Perfil</button>)
-              :
               (<div className='up-edit-buttons-container'>
                 <IoMdSave onClick={SaveChanges} className='up-edit-buttons'/>
                 <IoMdClose onClick={CancelChanges} className='up-edit-buttons'/>
-              </div>)}
+              </div>)
+              :
+            (<button className="up-edit-btn" onClick={EnableEditMode}>Editar Perfil</button>)}
             </div>
             <h4 className="up-username">{user ? user.username : ""}</h4>
             <div className='relative'>
