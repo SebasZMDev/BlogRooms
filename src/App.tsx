@@ -33,6 +33,8 @@ export type PostData = {
 export type UserContextType = {
   user: UserType | null;
   setUser: (user: UserType | null) => void;
+  usersList: UserType[] | null;
+  setUsersList: (usersList: UserType[] | null) => void;
   isUserLogged: boolean;
   setIsUserLogged: (isLogged: boolean) => void;
 };
@@ -41,19 +43,25 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
+  const [usersList, setUsersList] = useState<UserType[]| null>(null);
   const [isUserLogged, setIsUserLogged] = useState(false);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('actualUser');
+    const savedList = localStorage.getItem('usersList');
     if (savedUser) {
       const parsedUser = JSON.parse(savedUser);
       setUser(parsedUser);
       setIsUserLogged(true);
     }
+    if (savedList) {
+      const parsedList = JSON.parse(savedList);
+      setUsersList(parsedList)
+    }
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, isUserLogged, setIsUserLogged}}>
+    <UserContext.Provider value={{ user, setUser,usersList, setUsersList, isUserLogged, setIsUserLogged}}>
       {children}
     </UserContext.Provider>
   );

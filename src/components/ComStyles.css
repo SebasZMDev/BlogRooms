@@ -454,11 +454,13 @@
     filter: opacity(50%);
 }
 
+
+
 .edit-up-desc{
     position: absolute;
     top: 0;
     color: #202020;
-    background: transparent;
+    background: #e6d7c3;
     border: 0.5px solid #4B3A32;
     border-radius: 5px;
     width: 95%;
