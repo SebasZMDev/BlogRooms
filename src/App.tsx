@@ -11,8 +11,8 @@ export type UserType = {
   username: string;
   password: string;
   userInfo: {
-    pfp: string;
-    banner: string;
+    pfp:string;
+    banner:string;
     description: string;
     posts: PostData[];
     likes: PostData[];
@@ -21,13 +21,12 @@ export type UserType = {
 
 export type PostData = {
   id: string;
-  title: string;
   content: string;
   media: string | null;
   score: number;
   repost: number;
-  comments: string;
-  fecha: Date;
+  comments: PostData[];
+  fecha: string;
 };
 
 export type UserContextType = {
@@ -45,7 +44,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [usersList, setUsersList] = useState<UserType[]| null>(null);
   const [isUserLogged, setIsUserLogged] = useState(false);
-
   useEffect(() => {
     const savedUser = localStorage.getItem('actualUser');
     const savedList = localStorage.getItem('usersList');
@@ -59,7 +57,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       setUsersList(parsedList)
     }
   }, []);
-
   return (
     <UserContext.Provider value={{ user, setUser,usersList, setUsersList, isUserLogged, setIsUserLogged}}>
       {children}
@@ -74,6 +71,7 @@ export const useUser = () => {
   }
   return context;
 };
+
 
 function App() {
   return (

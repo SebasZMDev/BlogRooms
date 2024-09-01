@@ -1,6 +1,5 @@
 import React from 'react';
 import './ComStyles.css';
-import Post from './Post'
 
 interface Props {
   children?: React.ReactNode;

@@ -110,13 +110,14 @@ const Login = () => {
     if (emailExists || nameExists){
       setErrorMsg('')
       usersList.find((user) => {
-        if(user.password === passwordLog){
+        if((user.username===nameLog || user.email===nameLog) && user.password === passwordLog){
           setUser(user);
+          console.log(user)
           localStorage.setItem('actualUser', JSON.stringify(user));
           navigate('/pages/Home');
           window.location.reload();
         }else{
-          setErrorMsg('Ingrese una contraseña valida')
+          setErrorMsg('Contraseña no valida')
         }
       })
     }

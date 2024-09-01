@@ -14,6 +14,7 @@ const UserProfile = () => {
 
 
     const EnableEditMode = () => {
+      setNewDesc(user?.userInfo.description||'')
       setEditMode(true)
       setSavedPFP(user?user.userInfo.pfp:'')
       setSavedBanner(user?user.userInfo.banner:'')
@@ -28,26 +29,17 @@ const UserProfile = () => {
       user?user.userInfo.description = newDesc:'';
       setUser(user);
       localStorage.setItem('actualUser', JSON.stringify(user));
-      () => {
-        const savedUsers = localStorage.getItem('usersList');
-        return savedUsers ? JSON.parse(savedUsers) : [];
-      }
-      const UpdateList = usersList?.map((usuario) => {
-        if(usuario.id === user?.id){
-          usuario=user
-        }
-      })
-
+      const updatedList = usersList?.map(item =>
+        item.id === user?.id ? user : item
+      ) || [];
+      setUsersList(updatedList);
+      localStorage.setItem('usersList', JSON.stringify(updatedList));
   }
+
   useEffect(()=>{
-    const UpdateList = usersList?.map(usuario =>
-      usuario.id === user?.id ? user : user
-    );
-    console.log(UpdateList)
+    console.log(user)
+    console.log(usersList)
   },[user])
-
-
-
 
   const CancelChanges = () => {
       setPrevIMG('')
@@ -55,29 +47,41 @@ const UserProfile = () => {
       user?user.userInfo.banner=savedBanner:'';
       setEditMode(false)
   }
-    const handleIMGChange = (
-      tipo: string,
-      e: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        const maxSize = 2 * 1024 * 1024;
-        if (file.size > maxSize) {
-          alert("El archivo es demasiado grande. El tamaño máximo permitido es 2 MB.");
-          e.target.value = "";
-          return;
-        }
-        const imageUrl = URL.createObjectURL(file);
-        if (tipo=='pfp'){
-          user?user.userInfo.pfp=imageUrl:'';
-          setPrevIMG(imageUrl)
-        }
-        if (tipo=='banner'){
-          user?user.userInfo.banner=imageUrl:'';
-          setPrevIMG(imageUrl)
-        }
+  const handleIMGChange = (
+    tipo: string,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const maxSize = 2 * 1024 * 1024;
+      if (file.size > maxSize) {
+        alert("El archivo es demasiado grande. El tamaño máximo permitido es 2 MB.");
+        e.target.value = "";
+        return;
       }
-    };
+      // Leer el archivo y convertirlo a una cadena Base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Obtener la cadena Base64 del resultado
+        const base64String = reader.result as string;
+        // Actualizar el perfil del usuario dependiendo del tipo de imagen (pfp o banner)
+        if (tipo === 'pfp') {
+          if (user) {
+            user.userInfo.pfp = base64String;
+            setPrevIMG(base64String); // Establecer la URL de la imagen para una vista previa
+          }
+        } else if (tipo === 'banner') {
+          if (user) {
+            user.userInfo.banner = base64String;
+            setPrevIMG(base64String); // Establecer la URL de la imagen para una vista previa
+          }
+        }
+      };
+      // Leer el archivo como una cadena Base64
+      reader.readAsDataURL(file);
+    }
+  };
+
     const ChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setNewDesc(e.target.value)
     };
@@ -88,7 +92,7 @@ const UserProfile = () => {
     return (
       <div className="up-general-container">
         <>
-            <div className='relative'>
+          <div className='relative'>
             {editMode?(<img className="up-banner" src={user?user.userInfo.banner:""} />)
             :(<img className="up-banner" src={prevIMG?prevIMG:user?user.userInfo.banner:''} />)}
             <div className='edit-up-banner-text' style={{display:editMode?'':'none'}}><h5>Cambiar Banner</h5></div>
@@ -114,9 +118,9 @@ const UserProfile = () => {
             <h4 className="up-username">{user ? user.username : ""}</h4>
             <div className='relative'>
                 <h5 className="up-desc">
-                    {user ? user.userInfo.description : "Perdido en los BlogRooms"}
+                    {user ? user.userInfo.description : newDesc}
                 </h5>
-                <textarea onChange={(e)=>ChangeDesc(e)} className="edit-up-desc"  style={{display:editMode?'':'none'}}/>
+                <textarea onChange={(e)=>ChangeDesc(e)} className="edit-up-desc" value={newDesc}  style={{display:editMode?'':'none'}}/>
             </div>
         </>
       </div>

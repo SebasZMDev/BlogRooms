@@ -81,6 +81,12 @@
     align-items: center;
 }
 
+.nv-user-name{
+    cursor: pointer;
+    font-size: 1rem;
+    color: #FDFD96;
+}
+
 .nv-user-button {
     width: 50px;
     height: 50px;
@@ -201,7 +207,7 @@
     top: 7.5rem;
     display: flex;
     flex-direction: column;
-    border: 4px double #4B3A32;
+    border: 4px double #202020;
     font-size: clamp(0.5rem,1rem,2rem);
 }
 
@@ -221,7 +227,7 @@
     display: grid;
     grid-template-rows: 70% 30%;
     background-color: var(--Amarillo-BG);
-    border: 1px dashed #4B3A32;
+    border: 1px dashed #202020;
     padding: 10px;
 }
 
@@ -234,6 +240,11 @@
     display: grid;
     grid-template-columns: 40% 60%;
     align-items: center;
+}
+
+.crp-btns-display {
+    display: flex;
+    justify-content: space-around;
 }
 
 .crp-pfp {
@@ -272,7 +283,7 @@
 .crp-btn {
     width: 100px;
     height: 40px;
-    background-color: #4B3A32;
+    background-color: #202020;
 }
 
 /* USERFEED */
@@ -284,19 +295,18 @@
     display: flex;
     flex-direction: column;
     background-color: transparent;
-    border: 1px dashed #4B3A32;
+    border: 1px dashed #202020;
 }
 
 /*  POST    */
 
 .post-container {
-    height: 100%;
-    min-height: 150px;
     display: grid;
     grid-template-rows: 30% 50% 20%;
     padding: 10px;
     background-color: var(--Amarillo-BG);
-    border-bottom: #4B3A32 1px ridge;
+    border-bottom: #202020 1px ridge;
+    cursor: pointer;
 }
 
 .post-display-top {
@@ -312,12 +322,13 @@
 }
 
 .post-username {
-    font-size: 0.75rem;
+    font-size: 1rem;
 }
 
 .post-text {
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 1rem;
+    min-height: 50px;
 }
 
 .post-display-bottom {
@@ -461,7 +472,7 @@
     top: 0;
     color: #202020;
     background: #e6d7c3;
-    border: 0.5px solid #4B3A32;
+    border: 0.5px solid #202020;
     border-radius: 5px;
     width: 95%;
     display: grid;
@@ -527,7 +538,7 @@
     background-color: #FDFD96;
     color: black;
     z-index: 1;
-    border-bottom: 4px groove #4B3A32;
+    border-bottom: 4px groove #202020;
     box-shadow: 0 10px 20px -10px yellow;
 }
 
