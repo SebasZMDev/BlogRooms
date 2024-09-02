@@ -4,6 +4,8 @@ import { IoMdRemove } from "react-icons/io";
 import { IoMdRepeat } from "react-icons/io";
 import { FaComment } from "react-icons/fa";
 import { IoMdShare } from "react-icons/io";
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 type Props = {
   username: string;
@@ -14,12 +16,35 @@ type Props = {
   score: number;
   repost: number;
   comments: number;
+//preview: (id: string) => void;
 };
 
 
+
 const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comments }: Props) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isPostPreviewPage = location.pathname === '/pages/PostPreview';
+
+  const Preview = () => {
+    if (!isPostPreviewPage) {
+      navigate('/pages/PostPreview', {
+        state: {
+          username,
+          pfp,
+          fecha,
+          content,
+          media,
+          score,
+          repost,
+          comments
+        }
+      });
+    }
+  }
+
   return (
-    <div className='post-container'>
+    <div className='post-container' onClick={Preview}>
       <div className='post-display-top'>
         <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center'}}>
             <img className='post-pfp' src={pfp?pfp:''}/>
@@ -32,9 +57,15 @@ const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comment
       <div>
      <div className='post-text'>{content}</div>
         <div className='post-media'>
-          {media?media.map((img,index)=>(
-            <img className='post-media-item' key={index} src={img} alt={`media-${index}`}/>
-          )):('')}
+        {media ? media.map((img, index) => (
+          <img
+            className='post-media-item'
+            style={{ width: media.length < 2 ? '200%' : '', height: media.length < 2 ? '400px' : '' }}
+            key={index}
+            src={img}
+            alt={`media-${index}`}
+          />
+        )) : ''}
         </div>
       </div>
       <div className='post-display-bottom'>

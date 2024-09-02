@@ -50,7 +50,8 @@ const CreatePost = () => {
           minute: '2-digit',
           hour12: false,
         });
-        if (input.length < 1) {
+        if (input.length < 1 && media.length < 1) {
+            alert('Escribe algo o sube una img')
           return;
         }
         const newPost: PostData = {

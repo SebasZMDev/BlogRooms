@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import PostPreview from './pages/PostPreview';
 
 export type UserType = {
   id: string;
@@ -82,6 +83,7 @@ function App() {
           <Route path="/pages/Login" element={<Login />} />
           <Route path="/pages/Home" element={<Home />} />
           <Route path="/pages/Profile" element={<Profile />} />
+          <Route path="/pages/PostPreview" element={<PostPreview/>}/>
         </Routes>
       </Router>
     </UserProvider>

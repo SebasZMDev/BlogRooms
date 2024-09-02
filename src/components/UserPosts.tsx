@@ -12,6 +12,8 @@ const UserPosts = () => {
         setBtnPress(index)
     }
 
+
+
     return (
         <div className='posts-general-container'>
             <div className='posts-btns-container'>
