@@ -19,10 +19,6 @@ const UserProfile = () => {
       setSavedPFP(user?user.userInfo.pfp:'')
       setSavedBanner(user?user.userInfo.banner:'')
   }
-
-
-// PENDIENTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
   const SaveChanges = () => {
       setPrevIMG('')
       setEditMode(false)

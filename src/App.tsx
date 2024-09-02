@@ -22,7 +22,7 @@ export type UserType = {
 export type PostData = {
   id: string;
   content: string;
-  media: string | null;
+  media: string[] | null;
   score: number;
   repost: number;
   comments: PostData[];

@@ -28,11 +28,11 @@ main {
 
 
 .ultra-container {
-  position: relative;;
+  position: relative;
 }
 
 .load-screen {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-color: #303030;

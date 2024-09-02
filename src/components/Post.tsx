@@ -7,27 +7,36 @@ import { IoMdShare } from "react-icons/io";
 
 type Props = {
   username: string;
+  pfp: string | null;
+  fecha: string;
   content: string;
-  media: string | null;
+  media: string[] | null;
   score: number;
   repost: number;
   comments: number;
 };
 
 
-const UserFeed = ({ username, content, media, score, repost, comments }: Props) => {
+const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comments }: Props) => {
   return (
     <div className='post-container'>
       <div className='post-display-top'>
         <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center'}}>
-            <img className='post-pfp' src='https://i.pinimg.com/originals/37/8a/27/378a270e775265622393da8c0527417e.jpg'/>
+            <img className='post-pfp' src={pfp?pfp:''}/>
         </div>
         <div className='post-username'>
-            {username}
-            {media}
+            <h4>{username}</h4>
+            <h6>{fecha}</h6>
         </div>
       </div>
-      <div className='post-text'>{content}</div>
+      <div>
+     <div className='post-text'>{content}</div>
+        <div className='post-media'>
+          {media?media.map((img,index)=>(
+            <img className='post-media-item' key={index} src={img} alt={`media-${index}`}/>
+          )):('')}
+        </div>
+      </div>
       <div className='post-display-bottom'>
         <div className='post-score'>
             <IoMdAdd className='post-buttons'/>

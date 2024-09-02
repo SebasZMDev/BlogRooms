@@ -34,15 +34,15 @@ const Profile = () =>{
       <h5>BlogRooms, un espacio perdido en el internet</h5>
      </div>
             </div>
-                <NavBar/>
-                <main>
-                    <Frases/>
-                    <div className='user-profile-display'>
-                                <UserProfile/>
-                                <UserPosts/>
-                    </div>
-                    <Frases/>
-                </main>
+            <NavBar/>
+            <main>
+              <Frases/>
+                <div className='user-profile-display'>
+                  <UserProfile/>
+                  <UserPosts/>
+                </div>
+                <Frases/>
+            </main>
         </div>
     );
 }

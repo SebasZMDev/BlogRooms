@@ -30,6 +30,8 @@ const UserPosts = () => {
                 <Post
                     key={post.id}
                     username={user?.username}
+                    fecha={post.fecha}
+                    pfp={user?.userInfo.pfp}
                     content={post.content}
                     media={post.media}
                     score={post.score}
