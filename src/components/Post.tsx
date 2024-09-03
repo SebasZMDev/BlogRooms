@@ -16,7 +16,6 @@ type Props = {
   score: number;
   repost: number;
   comments: number;
-//preview: (id: string) => void;
 };
 
 

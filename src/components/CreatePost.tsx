@@ -4,6 +4,7 @@ import { FaImage } from "react-icons/fa";
 import { MdGifBox } from "react-icons/md";
 import { FaPoll } from "react-icons/fa";
 import { PostData, useUser } from '../App';
+import GifHandle from './GifHandle';
 
 
 
@@ -12,6 +13,7 @@ const CreatePost = () => {
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
+    const [gifDisplay, setGifDisplay] = useState<boolean>(false)
     const HandleChanges = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (input.length < 295) {
             setInput(e.target.value);
@@ -96,7 +98,7 @@ const CreatePost = () => {
                     </div>
                     <div className='relative'>
                         <MdGifBox className='crp-icon cursor'/>
-                        <input type='button' className='crp-hidden-element'/>
+                        <input type='button' onClick={()=>setGifDisplay(true)} className='crp-hidden-element'/>
                     </div>
                     <div className='relative'>
                         <FaPoll className='crp-icon cursor'/>
@@ -112,7 +114,7 @@ const CreatePost = () => {
                         Post
                     </button>
                 </div>
-
+                <GifHandle isDisplay={gifDisplay}/>
             </div>
         </div>
     )
