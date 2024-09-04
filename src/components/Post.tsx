@@ -5,7 +5,8 @@ import { IoMdRepeat } from "react-icons/io";
 import { FaComment } from "react-icons/fa";
 import { IoMdShare } from "react-icons/io";
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import ImgPreview from './ImgPreview';
+import { useState } from 'react';
 
 type Props = {
   username: string;
@@ -24,6 +25,8 @@ const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comment
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === '/pages/PostPreview';
+  const [imgPrevDisplay,setImgPrevDisplay] = useState<boolean>(false)
+  const [imgSrc,setImgSrc] = useState<string>('')
 
   const Preview = () => {
     if (!isPostPreviewPage) {
@@ -42,6 +45,17 @@ const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comment
     }
   }
 
+  const OpenImgPreview = (imgSrc:string) => {
+    setImgSrc(imgSrc)
+    setImgPrevDisplay(true)
+  }
+
+  const CloseImgPreview = () => {
+    setImgSrc('')
+    setImgPrevDisplay(false)
+  }
+
+
   return (
     <div className='post-container' onClick={Preview}>
       <div className='post-display-top'>
@@ -58,8 +72,9 @@ const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comment
         <div className='post-media'>
         {media ? media.map((img, index) => (
           <img
+            onClick={()=>OpenImgPreview(img)}
             className='post-media-item'
-            style={{ width: media.length < 2 ? '200%' : '', height: media.length < 2 ? '400px' : '' }}
+            style={{ width: media.length < 2 ? '200%' : '', height: media.length < 2 ? '500px' : '' }}
             key={index}
             src={img}
             alt={`media-${index}`}
@@ -83,6 +98,7 @@ const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comment
         </div>
           <IoMdShare className='post-buttons'/>
       </div>
+      {imgPrevDisplay && <ImgPreview imgSrc={imgSrc} closeImg={CloseImgPreview}/>}
     </div>
   );
 };

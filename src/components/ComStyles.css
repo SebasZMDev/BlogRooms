@@ -307,7 +307,6 @@ textarea {
     justify-items: end;
     align-items: center;
     font-size: clamp(0.7rem, 1rem, 3rem);
-    color: red;
 }
 
 .crp-btn {
@@ -376,6 +375,8 @@ textarea {
     height: 50% 50%;
     width: 100%;
     height: 100%;
+    padding-bottom: 20px;
+    padding-top: 10px;
 }
 
 .post-media-item {
@@ -685,7 +686,8 @@ textarea {
     position: relative;
 }
 .gif-img {
-    
+    width: 100%;
+    height: 100%;
 }
 .gif-cover {
     background-color:#505050;
@@ -698,4 +700,142 @@ textarea {
     position: absolute;
     text-align: center;
     align-content: center;
+    transition: all 2s;
+}
+
+.gif-cover:hover {
+    opacity: 100%;
+    font-weight: 600;
+    transition: all 1s;
+}
+
+/* IMG PREVIEW */
+
+.img-prev-div {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    overflow: hidden;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.img-prev-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #202020;
+    opacity: 75%;
+}
+
+.img-prev {
+    width: 50%;
+    height: 90%;
+    position: relative;
+}
+
+/*      COMENT POST         */
+
+
+.compost-container {
+    display: inline-block;
+    width: 90%;
+    height: 180px;
+    max-height: 100%;
+    margin: 10px auto;
+    grid-template-rows: 60% 40%;
+    display: grid;
+    background-color: var(--Amarillo-BG);
+    border: 1px dashed #202020;
+    padding: 10px;
+}
+
+.compost-layout-top {
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
+    align-items: center;
+    justify-items: center;
+}
+
+.compost-layout-bottom {
+    display: grid;
+    grid-template-columns: 15% 70% 15%;
+    align-items: center;
+    justify-items: center;
+}
+
+
+.compost-pfp {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 100%;
+}
+
+.compost-text-area {
+    width: 90%;
+    height: 80%;
+    color: black;
+    margin-left: 15px;
+    background-color: transparent;
+    resize: none;
+    height: auto;
+}
+
+.compost-media-display {
+    display: flex;
+    justify-items: start;
+    justify-content: start;
+    align-items: start;
+    align-content: start;
+    height: 60px;
+    max-width: 60px;
+    padding: 5px;
+}
+
+.compost-media-item {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.compost-text-area:focus {
+    outline: none;
+}
+
+.compost-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.compost-hidden-element {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.compost-btn-container {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    justify-items: end;
+    align-items: center;
+    font-size: clamp(0.7rem, 1rem, 3rem);
+}
+
+.compost-btn {
+    width: 80%;
+    height: 50%;
+    background-color: #202020;
+    color: #FDFD96;
+    border-radius: 15px;
 }

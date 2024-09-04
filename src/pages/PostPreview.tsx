@@ -1,8 +1,8 @@
-import React from "react";
 import NavBar from "../components/NavBar";
 import Frases from "../components/Frases";
 import Post from '../components/Post'
 import { useLocation } from "react-router-dom";
+import ComentPost from "../components/ComentPost";
 
 
 const PostPreview = ({}) => {
@@ -30,6 +30,10 @@ const PostPreview = ({}) => {
                     repost={post.repost}
                     comments={post.comments.length}
                 />
+                <ComentPost/>
+                <div className="comments-section">
+
+                </div>
                 </div>
                 <Frases/>
             </main>

@@ -10,7 +10,7 @@ export function useFetch<T>(url: string) {
         setLoading(true);
         fetch(url)
             .then((response) => response.json())
-            .then((data: T) => {  // Asigna el tipo T a la respuesta
+            .then((data: T) => {
                 setData(data);
                 setLoading(false);
             })

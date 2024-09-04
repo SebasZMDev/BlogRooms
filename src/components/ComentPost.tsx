@@ -1,14 +1,13 @@
 import './ComStyles.css'
 import { useState } from 'react';
 import { FaImage } from "react-icons/fa";
-import { MdGifBox } from "react-icons/md";
-import { FaPoll } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { PostData, useUser } from '../App';
-import GifHandle from './GifHandle';
 
 
 
-const CreatePost = () => {
+
+const ComentPost = () => {
     const {user, setUser, isUserLogged, usersList, setUsersList} = useUser();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
@@ -77,53 +76,28 @@ const CreatePost = () => {
           }
     }
 
-    const handleGifClose = () => {
-        setGifDisplay(false);
-    };
-    const handleSelectGif = (gifURL:string) =>{
-        setMedia([...media, gifURL])
-    }
     return(
-        <div className='crp-container'  style={{ display: isUserLogged ? '' : 'none' }}>
-            <div className='crp-layout-top'>
-                <img className='crp-pfp cursor'  src={user?user.userInfo.pfp:''}/>
-                <textarea maxLength={300} onChange={HandleChanges} className='crp-text-area' placeholder='Escribe algo. . .'/>
-                <div className='crp-media-display'>
+        <div className='compost-container'  style={{ display: isUserLogged ? '' : 'none' }}>
+            <div className='compost-layout-top'>
+                <img className='compost-pfp cursor'  src={user?user.userInfo.pfp:''}/>
+                <textarea maxLength={300} onChange={HandleChanges} className='compost-text-area' placeholder='Escribe algo. . .'/>
+                <FaArrowRight className='compost-btn' onClick={SubmitPost}/>
+            </div>
+            <div className='compost-layout-bottom'>
+                <div className='relative'>
+                    <FaImage className='compost-icon cursor'/>
+                    <input onChange={HandleMediaPost} type='file' className='compost-hidden-element'/>
+                </div>
+                <div className='compost-media-display'>
                     {media ? media.map((img, index) => (
-                        <img className='crp-media-item' key={index} src={img} alt={`media-${index}`} />
+                        <img className='compost-media-item' key={index} src={img} alt={`media-${index}`} />
                     )) : ('')}
                     {}
                 </div>
-            </div>
-
-            <div className='crp-layout-bottom'>
-                <div className='crp-btns-display'>
-                    <div className='relative'>
-                        <FaImage className='crp-icon cursor'/>
-                        <input onChange={HandleMediaPost} type='file' className='crp-hidden-element'/>
-                    </div>
-                    <div className='relative'>
-                        <MdGifBox className='crp-icon cursor'/>
-                        <input type='button' onClick={()=>setGifDisplay(true)} className='crp-hidden-element'/>
-                    </div>
-                    <div className='relative'>
-                        <FaPoll className='crp-icon cursor'/>
-                        <input type='button' className='crp-hidden-element'/>
-                    </div>
-                </div>
-
-                <div className='crp-btn-container'>
-                    <h6>
-                        {limite}
-                    </h6>
-                    <button className='crp-btn' onClick={SubmitPost}>
-                        Post
-                    </button>
-                </div>
-                <GifHandle isDisplay={gifDisplay} onClose={handleGifClose} selectGif={handleSelectGif}/>
+                <h5>{limite}</h5>
             </div>
         </div>
     )
 }
 
-export default CreatePost
+export default ComentPost

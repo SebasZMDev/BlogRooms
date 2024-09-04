@@ -3,28 +3,26 @@ import './ComStyles.css';
 import { IoMdClose, IoMdArrowRoundBack} from "react-icons/io";
 import { useEffect, useState } from "react";
 
-
 interface GiphyImage {
     url: string;
 }
-
 interface GiphyData {
     images: {
         original: GiphyImage;
     };
 }
-
 interface GiphyResponse {
     data: GiphyData[];
 }
 
 type Props = {
     isDisplay: boolean;
+    onClose: () => void;
+    selectGif: (gifURL: string) => void;
 }
 
-const GifHandle = ({ isDisplay }: Props) => {
+const GifHandle = ({ isDisplay, onClose, selectGif}: Props) => {
     const GiphyApiKey = 'dTTrs8c5LUucR6yfxNy7GhG0inrvbKCS';
-    const [display, setDisplay] = useState<boolean>(true)
     const [searchQuery, setSearchQuery] = useState<string>('');
     const limit = 12;
     const url = `https://api.giphy.com/v1/gifs/search?api_key=${GiphyApiKey}&q=${searchQuery}&limit=${limit}`;
@@ -68,28 +66,26 @@ const GifHandle = ({ isDisplay }: Props) => {
         setSearchQuery(item)
     }
 
-
     const { data: gifData, loading: gifLoading, error: gifError } = useFetch(url) as {
         data: GiphyResponse | null;
         loading: boolean;
         error: Error | null;
     };
-    // Verificar si gifData está definido y contiene datos antes de acceder a ellos
-    const gifSrc = gifData?.data?.[0]?.images?.original?.url || '';
+
+
 
     useEffect(()=>{
-        setDisplay(isDisplay)
         getRandomElements(SugList, 6)
     },[isDisplay])
 
     return (
-        <div className="gif-container" style={{display:display?'':'none'}}>
+        <div className="gif-container" style={{display:isDisplay?'':'none'}}>
             <div className="gif-container-bg"></div>
             <div className="gif-display">
                 <div className="gif-input-display">
                     {searchQuery.length>1?
                     (<IoMdArrowRoundBack onClick={()=>setSearchQuery('')} className="gif-input-btn" />):
-                    (<IoMdClose onClick={()=>setDisplay(false)} className="gif-input-btn" />)}
+                    (<IoMdClose onClick={onClose} className="gif-input-btn" />)}
                     <input
                         className="gif-input"
                         value={searchQuery}
@@ -102,12 +98,21 @@ const GifHandle = ({ isDisplay }: Props) => {
                     (<div>
                         {gifLoading && <h1>Loading gifs...</h1>}
                         {gifError && <h1>Error loading gif: {gifError.message}</h1>}
-                        {gifSrc && <img src={gifSrc} alt="GIF" />}:
+                        {gifData && <div className="gif-suggest">
+                            {gifData.data.map((element, index)=>(
+                            <img onClick={() => {
+                                selectGif(element.images.original.url);
+                                onClose();}}
+                                className="gif-img"
+                                key={index}
+                                src={element.images.original.url}
+                                alt={`gif-n-${index}`}/>
+                            ))}
+                        </div>}
                     </div>):
                     (<div className="gif-suggest">
                         {sugerencias.map((item, index)=>(
                         <div key={index} className="gif-div" onClick={()=>setSearch(item)}>
-                            <img className="gif-img"/>
                             <div className="gif-cover">
                                 {item}
                             </div>
