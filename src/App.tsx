@@ -22,6 +22,7 @@ export type UserType = {
 
 export type PostData = {
   id: string;
+  eparent: [UserName:string, PostID:string] | null;
   content: string;
   media: string[] | null;
   score: number;

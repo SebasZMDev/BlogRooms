@@ -2,7 +2,8 @@ import NavBar from "../components/NavBar";
 import Frases from "../components/Frases";
 import Post from '../components/Post'
 import { useLocation } from "react-router-dom";
-import ComentPost from "../components/ComentPost";
+import ComentPost from "../components/CommentPost";
+import { useEffect } from "react";
 
 
 const PostPreview = ({}) => {
@@ -12,7 +13,9 @@ const PostPreview = ({}) => {
     if (!post) {
       return <div>No post data available</div>;
     }
-
+    useEffect(()=>{
+        console.log(post)
+    },[])
     return(
         <div className='ultra-container'>
             <NavBar/>
@@ -21,6 +24,7 @@ const PostPreview = ({}) => {
                 <div className='center-container'>
                 <Post
                     key={post.id}
+                    id={post.id}
                     username={post.username}
                     fecha={post.fecha}
                     pfp={post.pfp}
@@ -28,11 +32,25 @@ const PostPreview = ({}) => {
                     media={post.media}
                     score={post.score}
                     repost={post.repost}
-                    comments={post.comments.length}
+                    comments={post.comments}
                 />
-                <ComentPost/>
+                <ComentPost parentInfo={[post.username, post.id]}/>
                 <div className="comments-section">
-
+                    {post.comments? post.commments.map((element:any)=>{
+                        <Post
+                        key={element.id}
+                        id={element.id}
+                        username={element.username}
+                        fecha={element.fecha}
+                        pfp={element.pfp}
+                        content={element.content}
+                        media={element.media}
+                        score={element.score}
+                        repost={element.repost}
+                        comments={element.comments.length}
+                        />
+                    })
+                    :(<h4>Bazinga</h4>)}
                 </div>
                 </div>
                 <Frases/>

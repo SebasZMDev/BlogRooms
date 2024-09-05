@@ -7,8 +7,10 @@ import { IoMdShare } from "react-icons/io";
 import { useLocation, useNavigate } from 'react-router-dom';
 import ImgPreview from './ImgPreview';
 import { useState } from 'react';
+import { PostData } from '../App';
 
 type Props = {
+  id: string;
   username: string;
   pfp: string | null;
   fecha: string;
@@ -16,12 +18,12 @@ type Props = {
   media: string[] | null;
   score: number;
   repost: number;
-  comments: number;
+  comments: PostData[];
 };
 
 
 
-const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comments }: Props) => {
+const UserFeed = ({ id, username, pfp, fecha, content, media, score, repost, comments }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === '/pages/PostPreview';
@@ -32,6 +34,7 @@ const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comment
     if (!isPostPreviewPage) {
       navigate('/pages/PostPreview', {
         state: {
+          id,
           username,
           pfp,
           fecha,
@@ -94,7 +97,7 @@ const UserFeed = ({ username, pfp, fecha, content, media, score, repost, comment
         </div>
         <div className='post-score'>
           <FaComment className='post-buttons'/>
-          <h4>{comments}</h4>
+          <h4>{comments?comments.length:0}</h4>
         </div>
           <IoMdShare className='post-buttons'/>
       </div>

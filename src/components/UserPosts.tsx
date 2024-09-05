@@ -31,6 +31,7 @@ const UserPosts = () => {
             {btnPress === 1 && user?.userInfo.posts.map((post)=>(
                 <Post
                     key={post.id}
+                    id={post.id}
                     username={user?.username}
                     fecha={post.fecha}
                     pfp={user?.userInfo.pfp}

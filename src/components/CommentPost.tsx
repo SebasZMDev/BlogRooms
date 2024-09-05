@@ -1,18 +1,20 @@
 import './ComStyles.css'
 import { useState } from 'react';
 import { FaImage } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
+import { TiArrowRightThick } from "react-icons/ti";
 import { PostData, useUser } from '../App';
 
 
+type Props = {
+    parentInfo: [UserID:string, PostID:string]
+}
 
-
-const ComentPost = () => {
+const CommentPost = ({parentInfo}:Props) => {
     const {user, setUser, isUserLogged, usersList, setUsersList} = useUser();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
-    const [gifDisplay, setGifDisplay] = useState<boolean>(false)
+
     const HandleChanges = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (input.length < 295) {
             setInput(e.target.value);
@@ -41,7 +43,7 @@ const ComentPost = () => {
               reader.readAsDataURL(file);
         }
     }
-    const SubmitPost = () => {
+    const SubmitComment = () => {
         const Tiempo = new Date();
         const Fecha = Tiempo.toLocaleString('es-ES', {
           day: '2-digit',
@@ -57,6 +59,7 @@ const ComentPost = () => {
         }
         const newPost: PostData = {
           id: ('P' + user?.userInfo.posts.length),
+          eparent: parentInfo,
           content: input,
           media: media,
           score: 0,
@@ -64,6 +67,32 @@ const ComentPost = () => {
           comments: [],
           fecha: Fecha,
         };
+        if (parentInfo) {
+            const updatedList = usersList?.map((usuario) => {
+                if (usuario.id === parentInfo[0]) {
+                    return {
+                        ...usuario,
+                        userInfo: {
+                            ...usuario.userInfo,
+                            posts: usuario.userInfo.posts.map((post) => {
+                                if (post.id === parentInfo[1]) {
+                                    return {
+                                        ...post,
+                                        comments: [...post.comments, newPost]
+                                    };
+                                }
+                                return post;
+                            })
+                        }
+                    };
+                }
+                return usuario;
+            });
+            setUsersList(updatedList?updatedList:null);
+            localStorage.setItem('usersList', JSON.stringify(updatedList));
+            console.log('funciono el ParentINFO')
+        }
+
         if (user) {
             const updatedPostList = [...(user.userInfo.posts || []), newPost];
             user.userInfo.posts = updatedPostList;
@@ -76,12 +105,14 @@ const ComentPost = () => {
           }
     }
 
+
+
     return(
         <div className='compost-container'  style={{ display: isUserLogged ? '' : 'none' }}>
             <div className='compost-layout-top'>
                 <img className='compost-pfp cursor'  src={user?user.userInfo.pfp:''}/>
                 <textarea maxLength={300} onChange={HandleChanges} className='compost-text-area' placeholder='Escribe algo. . .'/>
-                <FaArrowRight className='compost-btn' onClick={SubmitPost}/>
+                <TiArrowRightThick className='compost-btn' onClick={SubmitComment}/>
             </div>
             <div className='compost-layout-bottom'>
                 <div className='relative'>
@@ -100,4 +131,4 @@ const ComentPost = () => {
     )
 }
 
-export default ComentPost
+export default CommentPost
