@@ -4,6 +4,7 @@ import Post from '../components/Post'
 import { useLocation } from "react-router-dom";
 import ComentPost from "../components/CommentPost";
 import { useEffect } from "react";
+import { PostData } from "../App";
 
 
 const PostPreview = ({}) => {
@@ -36,24 +37,25 @@ const PostPreview = ({}) => {
                 />
                 <ComentPost parentInfo={[post.username, post.id]}/>
                 <div className="comments-section">
-                    {post.comments? post.commments.map((element:any)=>{
+                {post.comments.length > 0 ? (
+                    post.comments.map((element:any) => (
                         <Post
-                        key={element.id}
-                        id={element.id}
-                        username={element.username}
-                        fecha={element.fecha}
-                        pfp={element.pfp}
-                        content={element.content}
-                        media={element.media}
-                        score={element.score}
-                        repost={element.repost}
-                        comments={element.comments.length}
+                            key={element.id}
+                            id={element.id}
+                            username={post.username}
+                            fecha={element.fecha}
+                            pfp={post.pfp}
+                            content={element.content}
+                            media={element.media}
+                            score={element.score}
+                            repost={element.repost}
+                            comments={element.comments}
                         />
-                    })
-                    :(<h4>Bazinga</h4>)}
+                    ))) : (<h4>Bazinga</h4>
+                )}
                 </div>
-                </div>
-                <Frases/>
+            </div>
+            <Frases/>
             </main>
         </div>
     )

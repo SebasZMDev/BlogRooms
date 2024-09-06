@@ -39,7 +39,7 @@ const UserPosts = () => {
                     media={post.media}
                     score={post.score}
                     repost={post.repost}
-                    comments={post.comments.length}
+                    comments={post.comments}
                 />))
             }
             {btnPress === 2 && <img style={{width:'100%', height:'300px'}} src='https://miro.medium.com/v2/resize:fit:600/1*m-HhwOVJaBrnOC6k5LjIjw.jpeg'/>}

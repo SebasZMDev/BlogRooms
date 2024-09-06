@@ -58,6 +58,7 @@ const CreatePost = () => {
         }
         const newPost: PostData = {
           id: ('P' + user?.userInfo.posts.length),
+          userData: [user?.id||'',user?.username||'',user?.userInfo.pfp||''],
           eparent: null,
           content: input,
           media: media,

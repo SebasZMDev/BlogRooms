@@ -58,51 +58,32 @@ const CommentPost = ({parentInfo}:Props) => {
           return;
         }
         const newPost: PostData = {
-          id: ('P' + user?.userInfo.posts.length),
-          eparent: parentInfo,
-          content: input,
-          media: media,
-          score: 0,
-          repost: 0,
-          comments: [],
-          fecha: Fecha,
+            id: ('P' + user?.userInfo.posts.length),
+            userData: [user?.id||'',user?.username||'',user?.userInfo.pfp||''],
+            eparent: parentInfo,
+            content: input,
+            media: media,
+            score: 0,
+            repost: 0,
+            comments: [],
+            fecha: Fecha,
         };
         if (parentInfo) {
             const updatedList = usersList?.map((usuario) => {
-                if (usuario.id === parentInfo[0]) {
-                    return {
-                        ...usuario,
-                        userInfo: {
-                            ...usuario.userInfo,
-                            posts: usuario.userInfo.posts.map((post) => {
-                                if (post.id === parentInfo[1]) {
-                                    return {
-                                        ...post,
-                                        comments: [...post.comments, newPost]
-                                    };
-                                }
-                                return post;
-                            })
-                        }
-                    };
+                if (usuario.username === parentInfo[0]) {
+                    const post = usuario.userInfo.posts.find((post) => post.id === parentInfo[1]);
+                    if (post) {
+                        post.comments = [...post.comments, newPost];
+                    }
                 }
                 return usuario;
             });
-            setUsersList(updatedList?updatedList:null);
+            console.log(updatedList)
+            setUsersList(updatedList?updatedList:null)
             localStorage.setItem('usersList', JSON.stringify(updatedList));
-            console.log('funciono el ParentINFO')
         }
 
-        if (user) {
-            const updatedPostList = [...(user.userInfo.posts || []), newPost];
-            user.userInfo.posts = updatedPostList;
-            setUser(user)
-            localStorage.setItem('actualUser', JSON.stringify(user));
-            const updatedList = usersList?.map(item =>
-            item.id === user?.id ? user : item) || [];
-            setUsersList(updatedList);
-            localStorage.setItem('usersList', JSON.stringify(updatedList));
-          }
+
     }
 
 
