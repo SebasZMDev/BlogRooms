@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { FaImage } from "react-icons/fa";
 import { TiArrowRightThick } from "react-icons/ti";
 import { PostData, useUser } from '../App';
-
+import {useSave} from '../hooks/useSave'
 
 type Props = {
     parentInfo: [UserID:string, PostID:string]
 }
 
 const CommentPost = ({parentInfo}:Props) => {
-    const {user, setUser, isUserLogged, usersList, setUsersList} = useUser();
+    const {user, isUserLogged, usersList} = useUser();
+    const {saveCurrentUser, saveUsersList} = useSave();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
@@ -78,12 +79,19 @@ const CommentPost = ({parentInfo}:Props) => {
                 }
                 return usuario;
             });
-            console.log(updatedList)
-            setUsersList(updatedList?updatedList:null)
-            localStorage.setItem('usersList', JSON.stringify(updatedList));
+            if (updatedList){
+                saveUsersList(updatedList)
+                /* if (user) {
+                    const updatedPostList = [...(user.userInfo.posts || []), newPost];
+                    user.userInfo.posts = updatedPostList;
+                    saveCurrentUser(user)
+
+                    const reUpdatedList = updatedList?.map(item =>
+                    item.id === user?.id ? user : item) || [];
+                    saveUsersList(reUpdatedList)
+                  } */
+            }
         }
-
-
     }
 
 

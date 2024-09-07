@@ -3,9 +3,11 @@ import { useUser } from '../App';
 import { useEffect, useState } from 'react';
 import { IoMdSave } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
+import {useSave} from '../hooks/useSave'
 
 const UserProfile = () => {
     const {user,setUser, usersList,setUsersList} = useUser();
+    const {saveCurrentUser, saveUsersList} = useSave();
     const [editMode, setEditMode]=useState<boolean>(false);
     const [newDesc, setNewDesc]=useState<string>(user?.userInfo.description || '')
     const [savedPFP, setSavedPFP]=useState<string>('')
@@ -23,13 +25,13 @@ const UserProfile = () => {
       setPrevIMG('')
       setEditMode(false)
       user?user.userInfo.description = newDesc:'';
-      setUser(user);
-      localStorage.setItem('actualUser', JSON.stringify(user));
-      const updatedList = usersList?.map(item =>
-        item.id === user?.id ? user : item
-      ) || [];
-      setUsersList(updatedList);
-      localStorage.setItem('usersList', JSON.stringify(updatedList));
+      if (user){
+        saveCurrentUser(user)
+        const updatedList = usersList?.map(item =>
+          item.id === user?.id ? user : item
+        ) || [];
+        saveUsersList(updatedList)
+      }
   }
 
   useEffect(()=>{

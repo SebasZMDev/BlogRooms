@@ -26,9 +26,9 @@ const PostPreview = ({}) => {
                 <Post
                     key={post.id}
                     id={post.id}
-                    username={post.username}
+                    userData={post.userData}
+                    eparent={post.eparent}
                     fecha={post.fecha}
-                    pfp={post.pfp}
                     content={post.content}
                     media={post.media}
                     score={post.score}
@@ -38,13 +38,13 @@ const PostPreview = ({}) => {
                 <ComentPost parentInfo={[post.username, post.id]}/>
                 <div className="comments-section">
                 {post.comments.length > 0 ? (
-                    post.comments.map((element:any) => (
+                    post.comments.map((element:PostData) => (
                         <Post
                             key={element.id}
                             id={element.id}
-                            username={post.username}
+                            userData={element.userData}
+                            eparent={element.eparent}
                             fecha={element.fecha}
-                            pfp={post.pfp}
                             content={element.content}
                             media={element.media}
                             score={element.score}

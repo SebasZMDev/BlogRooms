@@ -11,19 +11,19 @@ import { PostData } from '../App';
 
 type Props = {
   id: string;
-  username: string;
-  pfp: string | null;
-  fecha: string;
+  userData: [id:string,username:string ,pfp:string]
+  eparent: [UserName:string, PostID:string] | null;
   content: string;
   media: string[] | null;
   score: number;
   repost: number;
   comments: PostData[];
+  fecha: string;
 };
 
 
 
-const UserFeed = ({ id, username, pfp, fecha, content, media, score, repost, comments }: Props) => {
+const UserFeed = ({ id, userData, eparent, content, media, score, repost, comments, fecha }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === '/pages/PostPreview';
@@ -35,8 +35,8 @@ const UserFeed = ({ id, username, pfp, fecha, content, media, score, repost, com
       navigate('/pages/PostPreview', {
         state: {
           id,
-          username,
-          pfp,
+          userData,
+          eparent,
           fecha,
           content,
           media,
@@ -63,10 +63,10 @@ const UserFeed = ({ id, username, pfp, fecha, content, media, score, repost, com
     <div className='post-container' onClick={Preview}>
       <div className='post-display-top'>
         <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center'}}>
-            <img className='post-pfp' src={pfp?pfp:''}/>
+            <img className='post-pfp' src={userData[2]?userData[2]:''}/>
         </div>
         <div className='post-username'>
-            <h4>{username}</h4>
+            <h4>{userData[1]}</h4>
             <h6>{fecha}</h6>
         </div>
       </div>

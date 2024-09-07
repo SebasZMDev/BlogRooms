@@ -5,11 +5,12 @@ import { MdGifBox } from "react-icons/md";
 import { FaPoll } from "react-icons/fa";
 import { PostData, useUser } from '../App';
 import GifHandle from './GifHandle';
-
+import {useSave} from '../hooks/useSave'
 
 
 const CreatePost = () => {
     const {user, setUser, isUserLogged, usersList, setUsersList} = useUser();
+    const {saveCurrentUser, saveUsersList} = useSave();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
@@ -70,12 +71,10 @@ const CreatePost = () => {
         if (user) {
             const updatedPostList = [...(user.userInfo.posts || []), newPost];
             user.userInfo.posts = updatedPostList;
-            setUser(user)
-            localStorage.setItem('actualUser', JSON.stringify(user));
+            saveCurrentUser(user)
             const updatedList = usersList?.map(item =>
             item.id === user?.id ? user : item) || [];
-            setUsersList(updatedList);
-            localStorage.setItem('usersList', JSON.stringify(updatedList));
+            saveUsersList(updatedList)
           }
     }
 

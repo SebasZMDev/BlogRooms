@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../App';
 import { UserType } from '../App'
-
+import {useSave} from '../hooks/useSave'
 
 const Login = () => {
   const {setUser} = useUser()
+  const {saveCurrentUser, saveUsersList} = useSave();
   //const [actualUser, setActualUser] = useState<UserType>()
   const [usersList, setUsersList] = useState<UserType[]>(
     () => {
@@ -86,8 +87,8 @@ const Login = () => {
     const updatedUsersList = [...usersList, newUser];
     setUsersList(updatedUsersList);
     setUser(newUser);
-    localStorage.setItem('usersList', JSON.stringify(updatedUsersList));
-    localStorage.setItem('actualUser', JSON.stringify(newUser));
+    saveUsersList(updatedUsersList)
+    saveCurrentUser(newUser)
     navigate('/pages/Home');
     window.location.reload();
   };
