@@ -4,14 +4,17 @@ import { FaImage } from "react-icons/fa";
 import { TiArrowRightThick } from "react-icons/ti";
 import { PostData, useUser } from '../App';
 import {useSave} from '../hooks/useSave'
+import { getUserInfo } from '../hooks/getUserInfo';
+
 
 type Props = {
     parentInfo: [UserID:string, PostID:string]
 }
 
 const CommentPost = ({parentInfo}:Props) => {
-    const {user, isUserLogged, usersList} = useUser();
-    const {saveCurrentUser, saveUsersList} = useSave();
+    const {user, setUser, isUserLogged, usersList} = useUser();
+    const { saveUsersList} = useSave();
+    const {userName, userPFP, userPosts} = getUserInfo();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
@@ -59,8 +62,8 @@ const CommentPost = ({parentInfo}:Props) => {
           return;
         }
         const newPost: PostData = {
-            id: ('P' + user?.userInfo.posts.length),
-            userData: [user?.id||'',user?.username||'',user?.userInfo.pfp||''],
+            id: ('P' + userPosts(user?.id||'')?.length),
+            userID: user?.id||'',
             eparent: parentInfo,
             content: input,
             media: media,
@@ -71,16 +74,20 @@ const CommentPost = ({parentInfo}:Props) => {
         };
         if (parentInfo) {
             const updatedList = usersList?.map((usuario) => {
-                if (usuario.username === parentInfo[0]) {
+                if (usuario.username === userName(parentInfo[0])) {
+                    console.log('se encontro el usuario')
                     const post = usuario.userInfo.posts.find((post) => post.id === parentInfo[1]);
                     if (post) {
                         post.comments = [...post.comments, newPost];
+                        console.log('se agrego el post')
                     }
                 }
+                setUser(usuario)
                 return usuario;
             });
             if (updatedList){
                 saveUsersList(updatedList)
+                console.log(userPosts(user?.id||''))
                 /* if (user) {
                     const updatedPostList = [...(user.userInfo.posts || []), newPost];
                     user.userInfo.posts = updatedPostList;
@@ -99,7 +106,7 @@ const CommentPost = ({parentInfo}:Props) => {
     return(
         <div className='compost-container'  style={{ display: isUserLogged ? '' : 'none' }}>
             <div className='compost-layout-top'>
-                <img className='compost-pfp cursor'  src={user?user.userInfo.pfp:''}/>
+                <img className='compost-pfp cursor'  src={userPFP(user?.id||'')}/>
                 <textarea maxLength={300} onChange={HandleChanges} className='compost-text-area' placeholder='Escribe algo. . .'/>
                 <TiArrowRightThick className='compost-btn' onClick={SubmitComment}/>
             </div>

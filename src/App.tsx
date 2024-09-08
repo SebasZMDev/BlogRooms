@@ -22,7 +22,7 @@ export type UserType = {
 
 export type PostData = {
   id: string;
-  userData: [id:string,username:string ,pfp:string]
+  userID: string;
   eparent: [UserName:string, PostID:string] | null;
   content: string;
   media: string[] | null;
@@ -58,7 +58,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (savedList) {
       const parsedList = JSON.parse(savedList);
       setUsersList(parsedList)
-      console.log(parsedList)
     }
   }, []);
   return (

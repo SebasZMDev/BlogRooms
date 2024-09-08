@@ -5,17 +5,19 @@ import { useLocation } from "react-router-dom";
 import ComentPost from "../components/CommentPost";
 import { useEffect } from "react";
 import { PostData } from "../App";
+import { getUserInfo } from "../hooks/getUserInfo";
 
 
 const PostPreview = ({}) => {
     const location = useLocation();
     const post = location.state;
+    const {userThisPost} = getUserInfo()
 
     if (!post) {
       return <div>No post data available</div>;
     }
-    useEffect(()=>{
-        console.log(post)
+     useEffect(()=>{
+
     },[])
     return(
         <div className='ultra-container'>
@@ -26,7 +28,7 @@ const PostPreview = ({}) => {
                 <Post
                     key={post.id}
                     id={post.id}
-                    userData={post.userData}
+                    userID={post.userI}
                     eparent={post.eparent}
                     fecha={post.fecha}
                     content={post.content}
@@ -35,24 +37,22 @@ const PostPreview = ({}) => {
                     repost={post.repost}
                     comments={post.comments}
                 />
-                <ComentPost parentInfo={[post.username, post.id]}/>
+                <ComentPost parentInfo={[post.userID, post.id]}/>
                 <div className="comments-section">
-                {post.comments.length > 0 ? (
-                    post.comments.map((element:PostData) => (
-                        <Post
-                            key={element.id}
-                            id={element.id}
-                            userData={element.userData}
-                            eparent={element.eparent}
-                            fecha={element.fecha}
-                            content={element.content}
-                            media={element.media}
-                            score={element.score}
-                            repost={element.repost}
-                            comments={element.comments}
-                        />
-                    ))) : (<h4>Bazinga</h4>
-                )}
+                {userThisPost(post.userID, post.id)?.comments?.map((element) => (
+                <Post
+                    key={element.id}
+                    id={element.id}
+                    userID={element.userID}
+                    eparent={element.eparent}
+                    fecha={element.fecha}
+                    content={element.content}
+                    media={element.media}
+                    score={element.score}
+                    repost={element.repost}
+                    comments={element.comments}
+                />
+                ))}
                 </div>
             </div>
             <Frases/>

@@ -6,12 +6,14 @@ import { FaComment } from "react-icons/fa";
 import { IoMdShare } from "react-icons/io";
 import { useLocation, useNavigate } from 'react-router-dom';
 import ImgPreview from './ImgPreview';
-import { useState } from 'react';
-import { PostData } from '../App';
+import { useEffect, useState } from 'react';
+import { PostData, useUser } from '../App';
+import { getUserInfo } from '../hooks/getUserInfo';
+
 
 type Props = {
   id: string;
-  userData: [id:string,username:string ,pfp:string]
+  userID: string;
   eparent: [UserName:string, PostID:string] | null;
   content: string;
   media: string[] | null;
@@ -23,26 +25,22 @@ type Props = {
 
 
 
-const UserFeed = ({ id, userData, eparent, content, media, score, repost, comments, fecha }: Props) => {
+const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments, fecha }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === '/pages/PostPreview';
+  const {user} = useUser();
   const [imgPrevDisplay,setImgPrevDisplay] = useState<boolean>(false)
   const [imgSrc,setImgSrc] = useState<string>('')
+  const {userName, userPFP} = getUserInfo();
 
   const Preview = () => {
     if (!isPostPreviewPage) {
       navigate('/pages/PostPreview', {
         state: {
           id,
-          userData,
-          eparent,
-          fecha,
-          content,
-          media,
-          score,
-          repost,
-          comments
+          userID,
+          eparent
         }
       });
     }
@@ -63,10 +61,10 @@ const UserFeed = ({ id, userData, eparent, content, media, score, repost, commen
     <div className='post-container' onClick={Preview}>
       <div className='post-display-top'>
         <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center'}}>
-            <img className='post-pfp' src={userData[2]?userData[2]:''}/>
+            <img className='post-pfp' src={userPFP(user?.id||'')}/>
         </div>
         <div className='post-username'>
-            <h4>{userData[1]}</h4>
+            <h4>{userName(user?.id||'')}</h4>
             <h6>{fecha}</h6>
         </div>
       </div>

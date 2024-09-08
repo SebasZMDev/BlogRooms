@@ -2,11 +2,13 @@ import './ComStyles.css'
 import { useState } from 'react';
 import Post from '../components/Post'
 import { useUser } from '../App';
+import { getUserInfo } from '../hooks/getUserInfo';
 
 
 const UserPosts = () => {
     const {user} = useUser();
     const [btnPress, setBtnPress] = useState<number>(1);
+    const {userPosts} = getUserInfo();
 
     const ButtonPressed = (index:number) => {
         setBtnPress(index)
@@ -28,12 +30,12 @@ const UserPosts = () => {
                 </button>
             </div>
             <div className='posts-container'>
-            {btnPress === 1 && user?.userInfo.posts.map((post)=>(
+            {btnPress === 1 && userPosts(user?.id||'')?.map((post)=>(
                 <Post
                     key={post.id}
                     id={post.id}
                     eparent={post.eparent}
-                    userData={post.userData}
+                    userID={post.userID}
                     fecha={post.fecha}
                     content={post.content}
                     media={post.media}

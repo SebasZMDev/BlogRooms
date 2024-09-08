@@ -6,11 +6,13 @@ import { FaPoll } from "react-icons/fa";
 import { PostData, useUser } from '../App';
 import GifHandle from './GifHandle';
 import {useSave} from '../hooks/useSave'
+import { getUserInfo } from '../hooks/getUserInfo';
 
 
 const CreatePost = () => {
     const {user, setUser, isUserLogged, usersList, setUsersList} = useUser();
     const {saveCurrentUser, saveUsersList} = useSave();
+    const {userName,userPFP} = getUserInfo();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
@@ -59,7 +61,7 @@ const CreatePost = () => {
         }
         const newPost: PostData = {
           id: ('P' + user?.userInfo.posts.length),
-          userData: [user?.id||'',user?.username||'',user?.userInfo.pfp||''],
+          userID: user?.id||'',
           eparent: null,
           content: input,
           media: media,
@@ -87,7 +89,7 @@ const CreatePost = () => {
     return(
         <div className='crp-container'  style={{ display: isUserLogged ? '' : 'none' }}>
             <div className='crp-layout-top'>
-                <img className='crp-pfp cursor'  src={user?user.userInfo.pfp:''}/>
+                <img className='crp-pfp cursor'  src={userPFP(user?.id||'')}/>
                 <textarea maxLength={300} onChange={HandleChanges} className='crp-text-area' placeholder='Escribe algo. . .'/>
                 <div className='crp-media-display'>
                     {media ? media.map((img, index) => (
