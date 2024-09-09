@@ -3,43 +3,46 @@ import Frases from "../components/Frases";
 import Post from '../components/Post'
 import { useLocation } from "react-router-dom";
 import ComentPost from "../components/CommentPost";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PostData } from "../App";
 import { getUserInfo } from "../hooks/getUserInfo";
 
 
 const PostPreview = ({}) => {
     const location = useLocation();
+    const {getUserThisPost} = getUserInfo()
     const post = location.state;
-    const {userThisPost} = getUserInfo()
+    const postData = getUserThisPost(post.userID, post.id);
 
     if (!post) {
       return <div>No post data available</div>;
     }
-     useEffect(()=>{
 
-    },[])
     return(
         <div className='ultra-container'>
             <NavBar/>
             <main>
                 <Frases/>
                 <div className='center-container'>
-                <Post
-                    key={post.id}
-                    id={post.id}
-                    userID={post.userI}
-                    eparent={post.eparent}
-                    fecha={post.fecha}
-                    content={post.content}
-                    media={post.media}
-                    score={post.score}
-                    repost={post.repost}
-                    comments={post.comments}
-                />
-                <ComentPost parentInfo={[post.userID, post.id]}/>
                 <div className="comments-section">
-                {userThisPost(post.userID, post.id)?.comments?.map((element) => (
+                {postData ? (
+                    <Post
+                        key={postData.id}
+                        id={postData.id}
+                        userID={postData.userID}
+                        eparent={postData.eparent}
+                        fecha={postData.fecha}
+                        content={postData.content}
+                        media={postData.media}
+                        score={postData.score}
+                        repost={postData.repost}
+                        comments={postData.comments}
+                    />
+                ) : (
+                    <p>Post not found</p>
+                )}
+                <ComentPost parentInfo={[post.userID, post.id]}/>
+                {postData?.comments?.map((element) => (
                 <Post
                     key={element.id}
                     id={element.id}

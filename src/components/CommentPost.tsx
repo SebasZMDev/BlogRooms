@@ -1,6 +1,6 @@
 import './ComStyles.css'
 import { useState } from 'react';
-import { FaImage } from "react-icons/fa";
+import { IoMdAddCircle } from "react-icons/io";
 import { TiArrowRightThick } from "react-icons/ti";
 import { PostData, useUser } from '../App';
 import {useSave} from '../hooks/useSave'
@@ -13,8 +13,8 @@ type Props = {
 
 const CommentPost = ({parentInfo}:Props) => {
     const {user, setUser, isUserLogged, usersList} = useUser();
-    const { saveUsersList} = useSave();
-    const {userName, userPFP, userPosts} = getUserInfo();
+    const {saveCurrentUser, saveUsersList} = useSave();
+    const {getUsername, getUserPosts} = getUserInfo();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
@@ -62,24 +62,22 @@ const CommentPost = ({parentInfo}:Props) => {
           return;
         }
         const newPost: PostData = {
-            id: ('P' + userPosts(user?.id||'')?.length),
+            id: ('P' + getUserPosts(user?.id||'')?.length),
             userID: user?.id||'',
             eparent: parentInfo,
             content: input,
             media: media,
-            score: 0,
+            score: [],
             repost: 0,
             comments: [],
             fecha: Fecha,
         };
         if (parentInfo) {
             const updatedList = usersList?.map((usuario) => {
-                if (usuario.username === userName(parentInfo[0])) {
-                    console.log('se encontro el usuario')
+                if (usuario.username === getUsername(parentInfo[0])) {
                     const post = usuario.userInfo.posts.find((post) => post.id === parentInfo[1]);
                     if (post) {
                         post.comments = [...post.comments, newPost];
-                        console.log('se agrego el post')
                     }
                 }
                 setUser(usuario)
@@ -87,16 +85,15 @@ const CommentPost = ({parentInfo}:Props) => {
             });
             if (updatedList){
                 saveUsersList(updatedList)
-                console.log(userPosts(user?.id||''))
-                /* if (user) {
+                console.log(getUserPosts(user?.id||''))
+               if (user) {
                     const updatedPostList = [...(user.userInfo.posts || []), newPost];
                     user.userInfo.posts = updatedPostList;
                     saveCurrentUser(user)
-
                     const reUpdatedList = updatedList?.map(item =>
                     item.id === user?.id ? user : item) || [];
                     saveUsersList(reUpdatedList)
-                  } */
+                  }
             }
         }
     }
@@ -106,15 +103,17 @@ const CommentPost = ({parentInfo}:Props) => {
     return(
         <div className='compost-container'  style={{ display: isUserLogged ? '' : 'none' }}>
             <div className='compost-layout-top'>
-                <img className='compost-pfp cursor'  src={userPFP(user?.id||'')}/>
-                <textarea maxLength={300} onChange={HandleChanges} className='compost-text-area' placeholder='Escribe algo. . .'/>
-                <TiArrowRightThick className='compost-btn' onClick={SubmitComment}/>
-            </div>
-            <div className='compost-layout-bottom'>
                 <div className='relative'>
-                    <FaImage className='compost-icon cursor'/>
+                    <IoMdAddCircle className='compost-icon cursor'/>
                     <input onChange={HandleMediaPost} type='file' className='compost-hidden-element'/>
                 </div>
+                <textarea maxLength={300} onChange={HandleChanges} className='compost-text-area' placeholder='Comentar. . .'/>
+                <button className='compost-btn' onClick={SubmitComment}>
+                    <TiArrowRightThick size={25}/>
+                </button>
+            </div>
+            <div className='compost-layout-bottom'>
+
                 <div className='compost-media-display'>
                     {media ? media.map((img, index) => (
                         <img className='compost-media-item' key={index} src={img} alt={`media-${index}`} />

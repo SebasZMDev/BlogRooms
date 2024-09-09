@@ -10,9 +10,9 @@ import { getUserInfo } from '../hooks/getUserInfo';
 
 
 const CreatePost = () => {
-    const {user, setUser, isUserLogged, usersList, setUsersList} = useUser();
+    const {user, isUserLogged, usersList} = useUser();
     const {saveCurrentUser, saveUsersList} = useSave();
-    const {userName,userPFP} = getUserInfo();
+    const {getUserPFP} = getUserInfo();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
@@ -65,7 +65,7 @@ const CreatePost = () => {
           eparent: null,
           content: input,
           media: media,
-          score: 0,
+          score: [],
           repost: 0,
           comments: [],
           fecha: Fecha,
@@ -89,7 +89,7 @@ const CreatePost = () => {
     return(
         <div className='crp-container'  style={{ display: isUserLogged ? '' : 'none' }}>
             <div className='crp-layout-top'>
-                <img className='crp-pfp cursor'  src={userPFP(user?.id||'')}/>
+                <img className='crp-pfp cursor'  src={getUserPFP(user?.id||'')}/>
                 <textarea maxLength={300} onChange={HandleChanges} className='crp-text-area' placeholder='Escribe algo. . .'/>
                 <div className='crp-media-display'>
                     {media ? media.map((img, index) => (

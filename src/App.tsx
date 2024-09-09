@@ -16,21 +16,26 @@ export type UserType = {
     banner:string;
     description: string;
     posts: PostData[];
-    likes: PostData[];
+    likes: IDContext[] | null;
   };
 };
 
 export type PostData = {
   id: string;
   userID: string;
-  eparent: [UserName:string, PostID:string] | null;
+  eparent: [PUsername:string, PostID:string] | null;
   content: string;
   media: string[] | null;
-  score: number;
+  score: IDContext[] | null;
   repost: number;
   comments: PostData[];
   fecha: string;
 };
+
+export type IDContext = {
+  PUsername: string,
+  PostID: string
+}
 
 export type UserContextType = {
   user: UserType | null;

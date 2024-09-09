@@ -8,7 +8,7 @@ import { getUserInfo } from '../hooks/getUserInfo';
 const UserPosts = () => {
     const {user} = useUser();
     const [btnPress, setBtnPress] = useState<number>(1);
-    const {userPosts} = getUserInfo();
+    const {getUserPosts} = getUserInfo();
 
     const ButtonPressed = (index:number) => {
         setBtnPress(index)
@@ -30,7 +30,7 @@ const UserPosts = () => {
                 </button>
             </div>
             <div className='posts-container'>
-            {btnPress === 1 && userPosts(user?.id||'')?.map((post)=>(
+            {btnPress === 1 && getUserPosts(user?.id||'')?.map((post)=>(
                 <Post
                     key={post.id}
                     id={post.id}

@@ -6,18 +6,19 @@ import { FaComment } from "react-icons/fa";
 import { IoMdShare } from "react-icons/io";
 import { useLocation, useNavigate } from 'react-router-dom';
 import ImgPreview from './ImgPreview';
-import { useEffect, useState } from 'react';
-import { PostData, useUser } from '../App';
+import { useState } from 'react';
+import { IDContext, PostData, useUser } from '../App';
 import { getUserInfo } from '../hooks/getUserInfo';
+import { useSave } from '../hooks/useSave';
 
 
 type Props = {
   id: string;
   userID: string;
-  eparent: [UserName:string, PostID:string] | null;
+  eparent: [PUsername:string, PostID:string] | null;
   content: string;
   media: string[] | null;
-  score: number;
+  score: IDContext[] | null;
   repost: number;
   comments: PostData[];
   fecha: string;
@@ -29,10 +30,12 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === '/pages/PostPreview';
-  const {user} = useUser();
+  const {saveCurrentUser, saveUsersList} = useSave();
+  const {user, usersList} = useUser();
   const [imgPrevDisplay,setImgPrevDisplay] = useState<boolean>(false)
   const [imgSrc,setImgSrc] = useState<string>('')
-  const {userName, userPFP} = getUserInfo();
+  const {getUsername, getUserPFP, getUserThisPost} = getUserInfo();
+  const postData = getUserThisPost(userID, id)
 
   const Preview = () => {
     if (!isPostPreviewPage) {
@@ -56,15 +59,66 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
     setImgPrevDisplay(false)
   }
 
+  const VoteUpPost = () => {
+    if (!postData || !postData.score) {
+      console.error("postData o postData.score no están definidos.");
+      return;
+    }
+    const alreadyLiked = postData?.score?.some(
+      (element) => element.PUsername === user?.username && element.PostID === id
+    );
+    if (alreadyLiked){
+      if (user) {
+        const UpdatedList = postData.score.filter(
+          (element) => !(element.PUsername === user.username && element.PostID === id)
+        );
+        postData.score = UpdatedList;
+
+
+        const updatedUserLikes = user.userInfo.likes?.filter((like) => !(like.PUsername === user.username && like.PostID === id));
+        user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
+
+
+        saveCurrentUser(user);
+        const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
+        saveUsersList(updatedList);
+      }
+
+    }else{
+      const newLike: IDContext = {
+        PUsername: user?.username||'',
+        PostID: id
+      }
+      if (user){
+        const PostLikes = [...(postData?.score || []), newLike ]
+        postData.score = PostLikes
+
+        const updatedUserLikes = [...(user.userInfo.likes || []), newLike];
+        user.userInfo.likes = updatedUserLikes;
+
+        saveCurrentUser(user)
+        const updatedList = usersList?.map(item => item.id === user.id ? user : item) || [];
+        saveUsersList(updatedList)
+      }
+    }
+  }
+
+  const VoteDownPost = () => {
+    console.log(postData)
+    console.log(user)
+  }
+
+
+
 
   return (
     <div className='post-container' onClick={Preview}>
       <div className='post-display-top'>
         <div style={{display: 'grid', alignItems: 'center', justifyItems: 'center'}}>
-            <img className='post-pfp' src={userPFP(user?.id||'')}/>
+            <img className='post-pfp' src={getUserPFP(user?.id||'')}/>
         </div>
         <div className='post-username'>
-            <h4>{userName(user?.id||'')}</h4>
+            <h4>{getUsername(user?.id||'')}</h4>
             <h6>{fecha}</h6>
         </div>
       </div>
@@ -85,9 +139,9 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
       </div>
       <div className='post-display-bottom'>
         <div className='post-score'>
-            <IoMdAdd className='post-buttons'/>
-            <h4>{score}</h4>
-            <IoMdRemove className='post-buttons'/>
+            <IoMdAdd onClick={VoteUpPost} className='post-buttons'/>
+            <h4>{score?score.length:0}</h4>
+            <IoMdRemove onClick={VoteDownPost} className='post-buttons'/>
         </div>
         <div className='post-score'>
           <IoMdRepeat className='post-buttons'/>
