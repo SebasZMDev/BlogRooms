@@ -19,6 +19,7 @@ type Props = {
   content: string;
   media: string[] | null;
   score: IDContext[] | null;
+  negscore: IDContext[] | null,
   repost: number;
   comments: PostData[];
   fecha: string;
@@ -26,7 +27,7 @@ type Props = {
 
 
 
-const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments, fecha }: Props) => {
+const Post = ({ id, userID, eparent, content, media, score, negscore, repost, comments, fecha }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === '/pages/PostPreview';
@@ -60,13 +61,23 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
   }
 
   const VoteUpPost = () => {
-    if (!postData || !postData.score) {
-      console.error("postData o postData.score no están definidos.");
+    if (!postData || !postData.score || !postData.negscore) {
       return;
     }
     const alreadyLiked = postData?.score?.some(
       (element) => element.PUsername === user?.username && element.PostID === id
     );
+    const alreadyDisliked = postData?.negscore?.some(
+      (element) => element.PUsername === user?.username && element.PostID === id
+    );
+    if (alreadyDisliked){
+      if (user) {
+       const UpdatedList = postData.negscore.filter(
+        (element)=> !(element.PUsername === user.username && element.PostID === id)
+       )
+       postData.negscore = UpdatedList
+      }
+    }
     if (alreadyLiked){
       if (user) {
         const UpdatedList = postData.score.filter(
@@ -74,16 +85,13 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
         );
         postData.score = UpdatedList;
 
-
         const updatedUserLikes = user.userInfo.likes?.filter((like) => !(like.PUsername === user.username && like.PostID === id));
         user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
-
 
         saveCurrentUser(user);
         const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
         saveUsersList(updatedList);
       }
-
     }else{
       const newLike: IDContext = {
         PUsername: user?.username||'',
@@ -104,11 +112,65 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
   }
 
   const VoteDownPost = () => {
-    console.log(postData)
-    console.log(user)
+    if (!postData||!postData.negscore||!postData.score){
+      return
+    }
+    const alreadyDisliked = postData.negscore.some(
+      (element)=>element.PUsername === user?.username && element.PostID === id
+    );
+    const alreadyLiked = postData.score.some(
+      (element)=>element.PUsername === user?.username && element.PostID === id
+    );
+    if (alreadyLiked){
+      if (user){
+        const UpdatedList = postData.score.filter(
+          (element)=>(element.PUsername === user.username && element.PostID === id)
+        )
+        postData.score = UpdatedList
+      }
+    }
+    if (alreadyDisliked){
+      if (user) {
+        const UpdatedList = postData.negscore.filter(
+          (element) => !(element.PUsername === user.username && element.PostID === id)
+        );
+        postData.negscore = UpdatedList;
+
+        saveCurrentUser(user);
+        const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
+        saveUsersList(updatedList);
+      }
+    }else{
+      const newDislike: IDContext = {
+        PUsername: user?.username||'',
+        PostID: id
+      }
+      if (user){
+        const PostDislikes = [...(postData?.negscore || []), newDislike ]
+        postData.negscore = PostDislikes
+
+        // quita el like
+        const UpdatedList = postData.score.filter(
+          (element) => !(element.PUsername === user.username && element.PostID === id)
+        );
+        postData.score = UpdatedList;
+
+        // quita el like del usuario
+        const updatedUserLikes = user.userInfo.likes?.filter((like) => !(like.PUsername === user.username && like.PostID === id));
+        user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
+
+        saveCurrentUser(user);
+        const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
+        saveUsersList(updatedList);
+      }
+
+    }
+}
+
+  const showScore = () =>{
+    console.log('Score',postData?.score)
+    console.log('NegScore',postData?.negscore)
   }
-
-
 
 
   return (
@@ -140,7 +202,7 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
       <div className='post-display-bottom'>
         <div className='post-score'>
             <IoMdAdd onClick={VoteUpPost} className='post-buttons'/>
-            <h4>{score?score.length:0}</h4>
+            <h4 onClick={showScore} >{postData?.score ? postData?.score.length - (postData.negscore ? postData.negscore.length : 0) : 0}</h4>
             <IoMdRemove onClick={VoteDownPost} className='post-buttons'/>
         </div>
         <div className='post-score'>
@@ -158,4 +220,4 @@ const UserFeed = ({ id, userID, eparent, content, media, score, repost, comments
   );
 };
 
-export default UserFeed;
+export default Post;

@@ -35,6 +35,7 @@ const PostPreview = ({}) => {
                         content={postData.content}
                         media={postData.media}
                         score={postData.score}
+                        negscore={postData.negscore}
                         repost={postData.repost}
                         comments={postData.comments}
                     />
@@ -52,6 +53,7 @@ const PostPreview = ({}) => {
                     content={element.content}
                     media={element.media}
                     score={element.score}
+                    negscore={element.negscore}
                     repost={element.repost}
                     comments={element.comments}
                 />

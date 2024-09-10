@@ -27,6 +27,7 @@ export type PostData = {
   content: string;
   media: string[] | null;
   score: IDContext[] | null;
+  negscore: IDContext[] | null;
   repost: number;
   comments: PostData[];
   fecha: string;

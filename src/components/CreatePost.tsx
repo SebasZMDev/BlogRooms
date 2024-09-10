@@ -66,6 +66,7 @@ const CreatePost = () => {
           content: input,
           media: media,
           score: [],
+          negscore: [],
           repost: 0,
           comments: [],
           fecha: Fecha,
