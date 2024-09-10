@@ -4,8 +4,7 @@ import Frases from '../components/Frases';
 import UserProfile from '../components/UserProfile';
 import UserPosts from '../components/UserPosts';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useUser } from '../App';
+
 
 
 const Profile = () =>{

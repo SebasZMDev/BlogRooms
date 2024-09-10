@@ -3,8 +3,6 @@ import Frases from "../components/Frases";
 import Post from '../components/Post'
 import { useLocation } from "react-router-dom";
 import ComentPost from "../components/CommentPost";
-import { useEffect, useState } from "react";
-import { PostData } from "../App";
 import { getUserInfo } from "../hooks/getUserInfo";
 
 

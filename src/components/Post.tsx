@@ -40,7 +40,7 @@ const Post = ({ id, userID, eparent, content, media, score, negscore, repost, co
 
   const Preview = () => {
     if (!isPostPreviewPage) {
-      navigate('/pages/PostPreview', {
+      navigate(`/pages/PostPreview`, {
         state: {
           id,
           userID,
@@ -171,7 +171,6 @@ const Post = ({ id, userID, eparent, content, media, score, negscore, repost, co
     console.log('Score',postData?.score)
     console.log('NegScore',postData?.negscore)
   }
-
 
   return (
     <div className='post-container' onClick={Preview}>
