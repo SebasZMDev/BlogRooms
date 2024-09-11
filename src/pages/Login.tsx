@@ -76,8 +76,8 @@ const Login = () => {
       username: nameVal,
       password: passwordVal,
       userInfo: {
-        pfp: ".././src/images/default-pfp.jpg",
-        banner: ".././src/images/default-banner.jpg",
+        pfp: "/images/default-pfp.jpg",
+        banner: "/images/default-banner.jpg",
         description: "",
         posts: [],
         likes: []

@@ -91,7 +91,7 @@ function App() {
           <Route path="/pages/Login" element={<Login />} />
           <Route path="/pages/Home" element={<Home />} />
           <Route path="/pages/Profile" element={<Profile />} />
-          <Route path="/pages/PostPreview" element={<PostPreview/>}/>
+          <Route path="/pages/PostPreview/:userID/:postID" element={<PostPreview/>}/>
         </Routes>
       </Router>
     </UserProvider>

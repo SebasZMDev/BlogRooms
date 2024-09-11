@@ -1,0 +1,11 @@
+.parent-post-container {
+    display: grid;
+    grid-template-columns: 4% 96%;
+}
+
+.parent-post-aside {
+    width: 100%;
+    background: linear-gradient(90deg, #FDFD96, #FDFD96, #919147, #FDFD96, #FDFD96);
+
+    height: 100%;
+}

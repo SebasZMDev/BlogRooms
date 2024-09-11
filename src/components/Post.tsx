@@ -40,7 +40,7 @@ const Post = ({ id, userID, eparent, content, media, score, negscore, repost, co
 
   const Preview = () => {
     if (!isPostPreviewPage) {
-      navigate(`/pages/PostPreview`, {
+      navigate(`/pages/PostPreview/${postData?.userID}/${postData?.id}`, {
         state: {
           id,
           userID,
@@ -190,7 +190,7 @@ const Post = ({ id, userID, eparent, content, media, score, negscore, repost, co
           <img
             onClick={()=>OpenImgPreview(img)}
             className='post-media-item'
-            style={{ width: media.length < 2 ? '200%' : '', height: media.length < 2 ? '500px' : '' }}
+            style={{ width: media.length < 2 ? '200%' : '', height: media.length < 2 ? '200%' : '' }}
             key={index}
             src={img}
             alt={`media-${index}`}

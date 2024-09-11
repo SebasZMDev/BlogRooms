@@ -140,7 +140,7 @@ textarea {
     position: absolute;
     background-color: #303030;
     color: white;
-    bottom: -150%;
+    bottom: -200%;
     right: 0;
     text-align: center;
     border: 1px solid black;
@@ -276,11 +276,28 @@ textarea {
     padding: 5px;
 }
 
+.crp-media-container {
+    position: relative;
+}
+
 .crp-media-item {
     width: 50px;
     height: 50px;
     border-radius: 10px;
 }
+
+.crp-media-remove {
+    position: absolute;
+    color: red;
+    top: -10%;
+    right: -10%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 15px black);
+}
+
+
 
 .crp-text-area:focus {
     outline: none;

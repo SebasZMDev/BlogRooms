@@ -7,7 +7,7 @@ import { PostData, useUser } from '../App';
 import GifHandle from './GifHandle';
 import {useSave} from '../hooks/useSave'
 import { getUserInfo } from '../hooks/getUserInfo';
-
+import { IoMdClose } from "react-icons/io";
 
 const CreatePost = () => {
     const {user, isUserLogged, usersList} = useUser();
@@ -45,6 +45,11 @@ const CreatePost = () => {
               reader.readAsDataURL(file);
         }
     }
+    const RemoveMedia = (index: number) => {
+        const updatedArray = [...media];
+        updatedArray.splice(index, 1);
+        setMedia(updatedArray);
+      };
     const SubmitPost = () => {
         const Tiempo = new Date();
         const Fecha = Tiempo.toLocaleString('es-ES', {
@@ -85,6 +90,10 @@ const CreatePost = () => {
         setGifDisplay(false);
     };
     const handleSelectGif = (gifURL:string) =>{
+        if (media.length>=4){
+            alert('Maximo 4 archivos')
+            return
+        }
         setMedia([...media, gifURL])
     }
     return(
@@ -94,9 +103,11 @@ const CreatePost = () => {
                 <textarea maxLength={300} onChange={HandleChanges} className='crp-text-area' placeholder='Escribe algo. . .'/>
                 <div className='crp-media-display'>
                     {media ? media.map((img, index) => (
-                        <img className='crp-media-item' key={index} src={img} alt={`media-${index}`} />
+                        <div className='crp-media-container' key={index}>
+                            <img className='crp-media-item' src={img} alt={`media-${index}`} />
+                            <IoMdClose className='crp-media-remove' onClick={()=>RemoveMedia(index)}/>
+                        </div>
                     )) : ('')}
-                    {}
                 </div>
             </div>
 
