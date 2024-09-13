@@ -81,6 +81,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
        postData.negscore = UpdatedList
       }
       setColorDown(false)
+      console.log('ya dislikeado')
     }
     if (alreadyLiked){
       if (user) {
@@ -93,6 +94,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
 
         setColorUp(false)
+        console.log('ya likeado')
 
         saveCurrentUser(user);
         const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
@@ -111,6 +113,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         user.userInfo.likes = updatedUserLikes;
 
         setColorUp(true)
+        console.log('recien likeado')
 
         saveCurrentUser(user)
         const updatedList = usersList?.map(item => item.id === user.id ? user : item) || [];
@@ -135,6 +138,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
           (element)=>(element.PUsername === user.username && element.PostID === id)
         );
         setColorUp(false)
+        console.log('ya likeado')
         postData.score = UpdatedList
       }
     }
@@ -145,6 +149,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         );
         postData.negscore = UpdatedList;
 
+        console.log('ya dislikeado')
         setColorDown(false)
 
         saveCurrentUser(user);
@@ -171,6 +176,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
 
         setColorDown(true)
+        console.log('recien dislikeado')
 
         saveCurrentUser(user);
         const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
@@ -180,18 +186,26 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
     }
 }
 
-useEffect (()=>{
-  if (user && postData?.score && postData.negscore){
-    const Liked = postData.score.some(
-      (element)=>(element.PUsername === user.username && element.PostID === id)
+const ShowScore = () =>{
+  console.log('Score',postData?.score)
+  console.log('NegScore',postData?.negscore)
+}
+
+useEffect(() => {
+  if (postData && user) {
+    const Liked = postData.score?.some(
+      (element) => element.PUsername === user.username && element.PostID === id
     );
-    const Disliked = postData.negscore.some(
-      (element)=>(element.PUsername === user.username && element.PostID === id)
+    const Disliked = postData.negscore?.some(
+      (element) => element.PUsername === user.username && element.PostID === id
     );
-    if (Liked) {setColorUp(true)}
-    if (Disliked) {setColorDown(true)}
+
+    // Establece true o false de manera explícita
+    setColorUp(!!Liked);
+    setColorDown(!!Disliked);
   }
-})
+}, [postData, user]);
+
 
 
   return (
@@ -226,7 +240,7 @@ useEffect (()=>{
   <div className='post-display-bottom'>
     <div className='post-score'>
       <IoMdAdd style={coloUp ? { color: 'green' } : {}} onClick={(e) => { e.stopPropagation(); VoteUpPost();}} className='post-buttons' />
-      <h4 onClick={(e) => { e.stopPropagation(); }}>{postData?.score ? postData?.score.length - (postData.negscore ? postData.negscore.length : 0) : 0}</h4>
+      <h4 onClick={(e) => { e.stopPropagation(); ShowScore();}}>{postData?.score ? postData?.score.length - (postData.negscore ? postData.negscore.length : 0) : 0}</h4>
       <IoMdRemove style={colorDown? {color: 'red'}:{}} onClick={(e) => { e.stopPropagation(); VoteDownPost();}} className='post-buttons' />
     </div>
     <div className='post-score'>

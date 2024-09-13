@@ -35,7 +35,7 @@ textarea {
     display: grid;
     grid-template-columns: 25% 50% 25%;
     background-color: #202020;
-    align-items: center;
+    align-content: center;
     z-index: 2;
 }
 
@@ -55,7 +55,9 @@ textarea {
 
 .nv-search-bar {
     display: grid;
+    width: 90%;
     grid-template-columns: 80% 20%;
+    justify-self: end;
     align-content: center;
 }
 
@@ -87,13 +89,18 @@ textarea {
 
 .nv-user-name{
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #FDFD96;
 }
 
 .nv-user-button {
     width: 50px;
     height: 50px;
+}
+
+.nv-bell {
+    width: 2.5em;
+    height: 2.5em;
 }
 
 .nv-bell:hover {
@@ -121,6 +128,8 @@ textarea {
 
 .nv-pfp {
     border-radius: 100%;
+    width: 3.5em;
+    height: 3.5em;
     position: relative;
 }
 
@@ -133,6 +142,7 @@ textarea {
 
 .nv-mini-menu {
     position: relative;
+    align-content: center;
 }
 
 .nv-user-config {
@@ -304,8 +314,8 @@ textarea {
 }
 
 .crp-icon {
-    width: 30px;
-    height: 30px;
+    width: 2.5em;
+    height: 2.5em;
 }
 
 .crp-hidden-element {
@@ -396,17 +406,20 @@ textarea {
     height: 100%;
     padding-bottom: 20px;
     padding-top: 10px;
+
 }
 
 .post-media-item {
     width: 100%;
-    height: 200px;
+    height: 100%;
+    border-radius: 10px;
 }
 
 .post-display-bottom {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin-top: 40px;
 }
 
 .post-buttons {
@@ -768,6 +781,7 @@ textarea {
     height: 130px;
     max-height: 100%;
     grid-template-rows: 60% 40%;
+    align-items: center;
     display: grid;
     background-color: #F0F06B;
     border-left: 0.25px double #bebe5d;
