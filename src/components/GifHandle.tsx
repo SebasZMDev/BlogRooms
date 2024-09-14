@@ -88,6 +88,7 @@ const GifHandle = ({ isDisplay, onClose, selectGif}: Props) => {
                     (<IoMdClose onClick={onClose} className="gif-input-btn" />)}
                     <input
                         className="gif-input"
+                        name="gif-search"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Buscar GIFs"

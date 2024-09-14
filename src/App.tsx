@@ -28,9 +28,10 @@ export type PostData = {
   media: string[] | null;
   score: IDContext[] | null;
   negscore: IDContext[] | null;
-  repost: number;
+  repost: string[];
   comments: PostData[];
   fecha: string;
+  postType: string;
 };
 
 export type IDContext = {

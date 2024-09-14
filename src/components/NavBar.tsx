@@ -24,7 +24,6 @@ const NavBar = () => {
   };
 
   const CerrarSesion = () =>{
-    console.log('waaa')
     setUser(null)
     setIsUserLogged(false)
     localStorage.removeItem('actualUser');
@@ -55,7 +54,7 @@ const NavBar = () => {
       </div>
 
       <div className='nv-search-bar'>
-        <input className='nv-search-input'/>
+        <input className='nv-search-input' name='search-bar'/>
         <HiSearch color='#FDFD96' className='nv-search-icon cursor'/>
       </div>
 

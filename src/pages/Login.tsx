@@ -113,7 +113,6 @@ const Login = () => {
       usersList.find((user) => {
         if((user.username===nameLog || user.email===nameLog) && user.password === passwordLog){
           setUser(user);
-          console.log(user)
           localStorage.setItem('actualUser', JSON.stringify(user));
           navigate('/pages/Home');
           window.location.reload();
@@ -153,7 +152,7 @@ const Login = () => {
     <div className="mega-container" style={{ backgroundColor: "#303030" }}>
       <div className="general-container" >
         <div className="logo-container">
-          <div className="centro icon" style={{ color: "#FDFD96" }} onClick={()=>console.log(usersList)}>
+          <div className="centro icon" style={{ color: "#FDFD96" }}>
             <svg
               stroke="currentColor"
               fill="currentColor"

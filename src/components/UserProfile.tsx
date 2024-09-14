@@ -1,6 +1,6 @@
 import './ComStyles.css'
 import { useUser } from '../App';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { IoMdSave } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import {useSave} from '../hooks/useSave'
@@ -34,10 +34,6 @@ const UserProfile = () => {
       }
   }
 
-  useEffect(()=>{
-    console.log(user)
-    console.log(usersList)
-  },[user])
 
   const CancelChanges = () => {
       setPrevIMG('')
@@ -118,7 +114,7 @@ const UserProfile = () => {
                 <h5 className="up-desc">
                     {user ? user.userInfo.description : newDesc}
                 </h5>
-                <textarea onChange={(e)=>ChangeDesc(e)} className="edit-up-desc" value={newDesc}  style={{display:editMode?'':'none'}}/>
+                <textarea name='change-description' onChange={(e)=>ChangeDesc(e)} className="edit-up-desc" value={newDesc}  style={{display:editMode?'':'none'}}/>
             </div>
         </>
       </div>

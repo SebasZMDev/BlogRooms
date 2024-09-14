@@ -3,16 +3,12 @@ import NavBar from '../components/NavBar';
 import Frases from '../components/Frases';
 import CreatePost from '../components/CreatePost';
 import UserFeed  from '../components/UserFeed';
-import { useUser } from '../App';
 import { useEffect, useState } from 'react';
 
 
 const Home = () => {
-  const {user, isUserLogged} = useUser();
   const [removeCharge, setRemoveCharge] = useState<boolean>(false);
-  (()=>{
-    console.log(user, isUserLogged)
-  })
+
 
   useEffect(()=>{
     setTimeout(() => {

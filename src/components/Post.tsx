@@ -20,7 +20,7 @@ type Props = {
   media: string[] | null;
   score: IDContext[] | null;
   negscore: IDContext[] | null,
-  repost: number;
+  repost: string[];
   comments: PostData[];
   fecha: string;
 };
@@ -35,8 +35,9 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
   const {user, usersList} = useUser();
   const [imgPrevDisplay,setImgPrevDisplay] = useState<boolean>(false)
   const [imgSrc,setImgSrc] = useState<string>('')
-  const {getUsername, getUserPFP, getUserThisPost} = getUserInfo();
+  const {getUsername, getUserPFP, getUserThisPost, getUserPosts} = getUserInfo();
   const postData = getUserThisPost(userID, id)
+  const tipo = postData?.postType;
   const [coloUp, setColorUp] = useState<boolean>(false)
   const [colorDown, setColorDown] = useState<boolean>(false)
   const [RePosted, setReposted] = useState<boolean>(false)
@@ -81,7 +82,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
        postData.negscore = UpdatedList
       }
       setColorDown(false)
-      console.log('ya dislikeado')
     }
     if (alreadyLiked){
       if (user) {
@@ -94,7 +94,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
 
         setColorUp(false)
-        console.log('ya likeado')
 
         saveCurrentUser(user);
         const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
@@ -113,7 +112,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         user.userInfo.likes = updatedUserLikes;
 
         setColorUp(true)
-        console.log('recien likeado')
 
         saveCurrentUser(user)
         const updatedList = usersList?.map(item => item.id === user.id ? user : item) || [];
@@ -138,7 +136,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
           (element)=>(element.PUsername === user.username && element.PostID === id)
         );
         setColorUp(false)
-        console.log('ya likeado')
         postData.score = UpdatedList
       }
     }
@@ -149,7 +146,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         );
         postData.negscore = UpdatedList;
 
-        console.log('ya dislikeado')
         setColorDown(false)
 
         saveCurrentUser(user);
@@ -176,7 +172,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
         user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
 
         setColorDown(true)
-        console.log('recien dislikeado')
 
         saveCurrentUser(user);
         const updatedList = usersList?.map((item) => item.id === user.id ? user : item) || [];
@@ -186,12 +181,69 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
     }
 }
 
-const ShowScore = () =>{
-  console.log('Score',postData?.score)
-  console.log('NegScore',postData?.negscore)
+
+const Repost = () =>{
+  if (user && postData){
+    if (postData.postType=='repost'){
+      return
+    }else{
+      const AlreadyReposted = postData?.repost.some((element)=>element == user.id)
+    if (AlreadyReposted){
+      const UpdatedRepost = postData.repost.filter(
+        (element)=>(element === user.username)
+      );
+      const UpdatedPost = getUserPosts(userID)?.filter((element)=>element.postType == 'post')
+      console.log(UpdatedPost)
+      user.userInfo.posts = UpdatedPost?UpdatedPost:user.userInfo.posts;
+      setReposted(false)
+      postData.repost = UpdatedRepost
+      saveCurrentUser(user);
+      const updatedRepost = usersList?.map((item) => item.id === user.id ? user : item) || [];
+      saveUsersList(updatedRepost);
+    }else{
+        getUserPosts(userID)?.map((element)=>{
+          if (element.id == postData?.id) {
+            const newRepost = { ...element }
+            newRepost.postType = 'repost'
+            newRepost.id += 'R'
+            postData.repost = [...postData.repost, userID]
+            user.userInfo.posts = [...user.userInfo.posts, newRepost]
+          }
+        })
+        setReposted(true)
+        saveCurrentUser(user)
+        const updatedList = usersList?.map(item =>
+        item.id === user?.id ? user : item) || [];
+        saveUsersList(updatedList)
+      }
+    }
+  }
+}
+
+const DeleteComment = () => {
+  if (user) {
+    const updatedArray = getUserPosts(userID)?.filter((element) => element.id !== id) || [];
+
+    user.userInfo.posts = updatedArray;
+
+    saveCurrentUser(user);
+
+    const updatedList = usersList?.map(item =>
+      item.id === user?.id ? user : item
+    ) || [];
+
+    saveUsersList(updatedList);
+  }
+};
+
+
+const show = () => {
+  console.log(user)
+  console.log(usersList)
 }
 
 useEffect(() => {
+
   if (postData && user) {
     const Liked = postData.score?.some(
       (element) => element.PUsername === user.username && element.PostID === id
@@ -199,8 +251,6 @@ useEffect(() => {
     const Disliked = postData.negscore?.some(
       (element) => element.PUsername === user.username && element.PostID === id
     );
-
-    // Establece true o false de manera explícita
     setColorUp(!!Liked);
     setColorDown(!!Disliked);
   }
@@ -216,7 +266,11 @@ useEffect(() => {
     </div>
     <div className='post-username'>
       <h4>{getUsername(user?.id || '')}</h4>
-      <h6>{fecha}</h6>
+      <h5>{tipo=='repost'?'Repost':''}</h5>
+      <div style={{display:'flex', justifyContent:'end', gridGap:'10px'}}>
+        <h6>{fecha}</h6>
+        <button onClick={(e)=>{e.stopPropagation(); DeleteComment();}}></button>
+      </div>
     </div>
   </div>
   <div>
@@ -240,12 +294,12 @@ useEffect(() => {
   <div className='post-display-bottom'>
     <div className='post-score'>
       <IoMdAdd style={coloUp ? { color: 'green' } : {}} onClick={(e) => { e.stopPropagation(); VoteUpPost();}} className='post-buttons' />
-      <h4 onClick={(e) => { e.stopPropagation(); ShowScore();}}>{postData?.score ? postData?.score.length - (postData.negscore ? postData.negscore.length : 0) : 0}</h4>
+      <h4 onClick={(e) => { e.stopPropagation(); show();}}>{postData?.score ? postData?.score.length - (postData.negscore ? postData.negscore.length : 0) : 0}</h4>
       <IoMdRemove style={colorDown? {color: 'red'}:{}} onClick={(e) => { e.stopPropagation(); VoteDownPost();}} className='post-buttons' />
     </div>
     <div className='post-score'>
-      <IoMdRepeat className='post-buttons' />
-      <h4>{repost}</h4>
+      <IoMdRepeat style={RePosted?{color: 'green'}:{}} onClick={(e)=>{e.stopPropagation(); Repost();}} className='post-buttons' />
+      <h4>{repost ? repost.length : 0}</h4>
     </div>
     <div className='post-score'>
       <FaComment className='post-buttons' />

@@ -69,9 +69,10 @@ const CommentPost = ({parentInfo}:Props) => {
             media: media,
             score: [],
             negscore: [],
-            repost: 0,
+            repost: [],
             comments: [],
             fecha: Fecha,
+            postType: 'comment'
         };
         if (parentInfo) {
             const updatedList = usersList?.map((usuario) => {
@@ -86,7 +87,6 @@ const CommentPost = ({parentInfo}:Props) => {
             });
             if (updatedList){
                 saveUsersList(updatedList)
-                console.log(getUserPosts(user?.id||''))
                if (user) {
                     const updatedPostList = [...(user.userInfo.posts || []), newPost];
                     user.userInfo.posts = updatedPostList;

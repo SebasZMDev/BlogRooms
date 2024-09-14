@@ -72,9 +72,10 @@ const CreatePost = () => {
           media: media,
           score: [],
           negscore: [],
-          repost: 0,
+          repost: [],
           comments: [],
           fecha: Fecha,
+          postType: 'post',
         };
         if (user) {
             const updatedPostList = [...(user.userInfo.posts || []), newPost];
@@ -100,7 +101,7 @@ const CreatePost = () => {
         <div className='crp-container'  style={{ display: isUserLogged ? '' : 'none' }}>
             <div className='crp-layout-top'>
                 <img className='crp-pfp cursor'  src={getUserPFP(user?.id||'')}/>
-                <textarea maxLength={300} onChange={HandleChanges} className='crp-text-area' placeholder='Escribe algo. . .'/>
+                <textarea name='write-post' maxLength={300} onChange={HandleChanges} className='crp-text-area' placeholder='Escribe algo. . .'/>
                 <div className='crp-media-display'>
                     {media ? media.map((img, index) => (
                         <div className='crp-media-container' key={index}>
