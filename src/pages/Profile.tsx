@@ -5,9 +5,11 @@ import UserProfile from '../components/UserProfile';
 import UserPosts from '../components/UserPosts';
 import { useState, useEffect } from 'react';
 
+type Props= {
+  userID: string;
+}
 
-
-const Profile = () =>{
+const Profile = ({userID}:Props) =>{
 
     const [removeCharge, setRemoveCharge] = useState<boolean>(false);
     useEffect(()=>{
@@ -39,8 +41,8 @@ const Profile = () =>{
             <main>
               <Frases/>
                 <div className='user-profile-display'>
-                  <UserProfile/>
-                  <UserPosts/>
+                  <UserProfile userID={userID}/>
+                  <UserPosts userID={userID}/>
                 </div>
                 <Frases/>
             </main>

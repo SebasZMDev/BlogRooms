@@ -3,6 +3,11 @@ import { useUser } from "../App"
 export const getUserInfo = () => {
     const { usersList } = useUser();
 
+    const getThisUser = (ID: string) => {
+        const user = usersList?.find(element => element.id === ID);
+        return user;
+    }
+
     const getUsername = (ID: string) => {
         const user = usersList?.find(element => element.id === ID);
         return user?.username;
@@ -22,5 +27,5 @@ export const getUserInfo = () => {
         return user?.userInfo.posts.find(element=> element.id === PostID);
     }
 
-    return { getUsername, getUserPFP, getUserPosts, getUserThisPost};
+    return { getThisUser, getUsername, getUserPFP, getUserPosts, getUserThisPost};
 }

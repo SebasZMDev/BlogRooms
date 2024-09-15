@@ -13,6 +13,7 @@ const NavBar = () => {
   const [menuAbierto,setMenuAbierto] = useState<boolean>(false);
   const navigate = useNavigate();
   const AbrirMenu = () => {setMenuAbierto(!menuAbierto)}
+  const userID = user?.id
   const RotacionInfinita = () => {
     if (cooldown) return;
     setRotacion(prevRotacion => prevRotacion + 90);
@@ -22,6 +23,14 @@ const NavBar = () => {
     setCooldown(true);
     setTimeout(() => setCooldown(false), 750);
   };
+
+  const toUserProfile = () => {
+    navigate(`/pages/Profile/${user?.id}`),{
+      state: {
+        userID
+      }
+    };
+  }
 
   const CerrarSesion = () =>{
     setUser(null)
@@ -67,9 +76,7 @@ const NavBar = () => {
           <div className='nv-mini-menu'>
             <img onClick={AbrirMenu} className='nv-user-button nv-pfp cursor' src={user?user.userInfo.pfp:''}/>
             <span className='nv-user-config' style={menuAbierto? {}:{display:'none'}}>
-            <Link to="/pages/Profile">
-              <ul>Perfil</ul>
-            </Link>
+            <ul onClick={toUserProfile}>Perfil</ul>
             <ul onClick={CerrarSesion}>Cerrar Sesion</ul>
             </span>
           </div>

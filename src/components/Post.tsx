@@ -31,16 +31,18 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === '/pages/PostPreview';
+  const isPostProfilePage = location.pathname === `/pages/Profile/${userID}`;
   const {saveCurrentUser, saveUsersList} = useSave();
   const {user, usersList} = useUser();
-  const [imgPrevDisplay,setImgPrevDisplay] = useState<boolean>(false)
-  const [imgSrc,setImgSrc] = useState<string>('')
   const {getUsername, getUserPFP, getUserThisPost, getUserPosts} = getUserInfo();
   const postData = getUserThisPost(userID, id)
   const tipo = postData?.postType;
-  const [coloUp, setColorUp] = useState<boolean>(false)
-  const [colorDown, setColorDown] = useState<boolean>(false)
-  const [RePosted, setReposted] = useState<boolean>(false)
+  const [imgPrevDisplay, setImgPrevDisplay] = useState<boolean>(false);
+  const [imgSrc, setImgSrc] = useState<string>('');
+  const [coloUp, setColorUp] = useState<boolean>(false);
+  const [colorDown, setColorDown] = useState<boolean>(false);
+  const [RePosted, setReposted] = useState<boolean>(false);
+
 
   const Preview = () => {
     if (!isPostPreviewPage) {
@@ -53,6 +55,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
       });
     }
   }
+
 
   const OpenImgPreview = (imgSrc:string) => {
     setImgSrc(imgSrc)
@@ -181,7 +184,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
     }
 }
 
-
 const Repost = () =>{
   if (user && postData){
     if (postData.postType=='repost'){
@@ -192,7 +194,7 @@ const Repost = () =>{
       const UpdatedRepost = postData.repost.filter(
         (element)=>(element === user.username)
       );
-      const UpdatedPost = getUserPosts(userID)?.filter((element)=>element.postType == 'post')
+      const UpdatedPost = getUserPosts(userID)?.filter((element)=>element.postType !== 'repost' && element.id !== `${id}R`)
       console.log(UpdatedPost)
       user.userInfo.posts = UpdatedPost?UpdatedPost:user.userInfo.posts;
       setReposted(false)
@@ -200,6 +202,7 @@ const Repost = () =>{
       saveCurrentUser(user);
       const updatedRepost = usersList?.map((item) => item.id === user.id ? user : item) || [];
       saveUsersList(updatedRepost);
+      console.log('ya reposteado')
     }else{
         getUserPosts(userID)?.map((element)=>{
           if (element.id == postData?.id) {
@@ -208,6 +211,7 @@ const Repost = () =>{
             newRepost.id += 'R'
             postData.repost = [...postData.repost, userID]
             user.userInfo.posts = [...user.userInfo.posts, newRepost]
+            console.log('Recien posteado')
           }
         })
         setReposted(true)
@@ -220,7 +224,7 @@ const Repost = () =>{
   }
 }
 
-const DeleteComment = () => {
+const DeletePost = () => {
   if (user) {
     const updatedArray = getUserPosts(userID)?.filter((element) => element.id !== id) || [];
 
@@ -231,19 +235,14 @@ const DeleteComment = () => {
     const updatedList = usersList?.map(item =>
       item.id === user?.id ? user : item
     ) || [];
-
+    if (!isPostProfilePage) {
+      navigate(`/pages/Home`)
+    }
     saveUsersList(updatedList);
   }
 };
 
-
-const show = () => {
-  console.log(user)
-  console.log(usersList)
-}
-
 useEffect(() => {
-
   if (postData && user) {
     const Liked = postData.score?.some(
       (element) => element.PUsername === user.username && element.PostID === id
@@ -256,8 +255,6 @@ useEffect(() => {
   }
 }, [postData, user]);
 
-
-
   return (
 <div className='post-container' onClick={Preview}>
   <div className='post-display-top'>
@@ -269,7 +266,7 @@ useEffect(() => {
       <h5>{tipo=='repost'?'Repost':''}</h5>
       <div style={{display:'flex', justifyContent:'end', gridGap:'10px'}}>
         <h6>{fecha}</h6>
-        <button onClick={(e)=>{e.stopPropagation(); DeleteComment();}}></button>
+        <button onClick={(e)=>{e.stopPropagation(); DeletePost();}}></button>
       </div>
     </div>
   </div>
@@ -294,7 +291,7 @@ useEffect(() => {
   <div className='post-display-bottom'>
     <div className='post-score'>
       <IoMdAdd style={coloUp ? { color: 'green' } : {}} onClick={(e) => { e.stopPropagation(); VoteUpPost();}} className='post-buttons' />
-      <h4 onClick={(e) => { e.stopPropagation(); show();}}>{postData?.score ? postData?.score.length - (postData.negscore ? postData.negscore.length : 0) : 0}</h4>
+      <h4>{postData?.score ? postData?.score.length - (postData.negscore ? postData.negscore.length : 0) : 0}</h4>
       <IoMdRemove style={colorDown? {color: 'red'}:{}} onClick={(e) => { e.stopPropagation(); VoteDownPost();}} className='post-buttons' />
     </div>
     <div className='post-score'>

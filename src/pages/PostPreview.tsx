@@ -5,7 +5,6 @@ import Post from "../components/Post";
 import { useLocation } from "react-router-dom";
 import ComentPost from "../components/CommentPost";
 import { getUserInfo } from "../hooks/getUserInfo";
-import { useEffect } from "react";
 
 const PostPreview = ({}) => {
   const location = useLocation();
@@ -19,8 +18,6 @@ const PostPreview = ({}) => {
   if (!post) {
     return <div>No post data available</div>;
   }
-
-  useEffect(() => {}, []);
 
   return (
     <div className="ultra-container">
@@ -47,7 +44,7 @@ const PostPreview = ({}) => {
                 />
               </div>
             ) : (
-              ""
+              postData?.postType=='comment'?(<h3>El post fue removido</h3>):''
             )}
             {postData ? (
               <Post
@@ -67,7 +64,8 @@ const PostPreview = ({}) => {
               <p>Post not found</p>
             )}
             <ComentPost parentInfo={[post.userID, post.id]} />
-            {postData?.comments?.map((element, index) => (
+            {postData?.comments?.slice()
+              .reverse().map((element, index) => (
               <div
                 className="parent-post-container"
                 key={element.id || `comment-${index}`}

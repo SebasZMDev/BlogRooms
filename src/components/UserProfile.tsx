@@ -5,7 +5,11 @@ import { IoMdSave } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import {useSave} from '../hooks/useSave'
 
-const UserProfile = () => {
+type Props= {
+  userID: string
+}
+
+const UserProfile = ({userID}: Props) => {
     const {user, usersList} = useUser();
     const {saveCurrentUser, saveUsersList} = useSave();
     const [editMode, setEditMode]=useState<boolean>(false);
