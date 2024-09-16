@@ -1,32 +1,29 @@
 import "./ComStyles.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Post from "../components/Post";
 import { useUser } from "../App";
 import { getUserInfo } from "../hooks/getUserInfo";
-
-type Props= {
-  userID: string
-}
+import { useParams } from "react-router-dom";
 
 
-const UserPosts = ({userID}:Props) => {
+
+const UserPosts = () => {
   const { user } = useUser();
   const [btnPress, setBtnPress] = useState<number>(1);
   const { getUserPosts, getThisUser,getUserThisPost} = getUserInfo();
   const Posts = getUserPosts(user?.id || "")
-  const thisUser = getThisUser(userID)
-  const thisLikes = thisUser?.userInfo.likes?.map((element) => {
-    return getUserThisPost(element.PUsername, element.PostID);
+  const { userID } = useParams();  // Obtén el userID desde la URL
+  const thisUser = getThisUser(userID?userID:'');
+  const thisLikes = thisUser?.userInfo.likes
+  const Likes2 = thisLikes?.map((element) => {
+    return getUserThisPost(thisUser?.id||'', element.PostID);
   });
+
+
   const ButtonPressed = (index: number) => {
     setBtnPress(index);
   };
 
-  console.log(
-    thisUser,
-    thisLikes,
-    'waaa'
-  )
 
 
   return (
@@ -89,7 +86,7 @@ const UserPosts = ({userID}:Props) => {
                 comments={post.comments}
               />
             ))}
-            {btnPress === 3 &&
+            {/* {btnPress === 3 &&
               thisLikes?.map((element) => (
                 element?
                 <Post
@@ -105,7 +102,7 @@ const UserPosts = ({userID}:Props) => {
                   repost={element.repost}
                   comments={element.comments}
                 />:''
-              ))}
+              ))} */}
       </div>
     </div>
   );

@@ -5,11 +5,8 @@ import UserProfile from '../components/UserProfile';
 import UserPosts from '../components/UserPosts';
 import { useState, useEffect } from 'react';
 
-type Props= {
-  userID: string;
-}
 
-const Profile = ({userID}:Props) =>{
+const Profile = () =>{
 
     const [removeCharge, setRemoveCharge] = useState<boolean>(false);
     useEffect(()=>{
@@ -41,8 +38,8 @@ const Profile = ({userID}:Props) =>{
             <main>
               <Frases/>
                 <div className='user-profile-display'>
-                  <UserProfile userID={userID}/>
-                  <UserPosts userID={userID}/>
+                  <UserProfile/>
+                  <UserPosts/>
                 </div>
                 <Frases/>
             </main>

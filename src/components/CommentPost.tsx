@@ -76,7 +76,7 @@ const CommentPost = ({parentInfo}:Props) => {
         };
         if (parentInfo) {
             const updatedList = usersList?.map((usuario) => {
-                if (usuario.username === getUsername(parentInfo[0])) {
+                if (usuario.id === getUsername(parentInfo[0])) {
                     const post = usuario.userInfo.posts.find((post) => post.id === parentInfo[1]);
                     if (post) {
                         post.comments = [...post.comments, newPost];

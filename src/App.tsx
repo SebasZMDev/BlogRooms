@@ -23,7 +23,7 @@ export type UserType = {
 export type PostData = {
   id: string;
   userID: string;
-  eparent: [PUsername:string, PostID:string] | null;
+  eparent: [UserID:string, PostID:string] | null;
   content: string;
   media: string[] | null;
   score: IDContext[] | null;
@@ -35,7 +35,7 @@ export type PostData = {
 };
 
 export type IDContext = {
-  PUsername: string,
+  UserID: string,
   PostID: string
 }
 
@@ -91,7 +91,7 @@ function App() {
           <Route path="/" element={<HomeOrLogin />} />
           <Route path="/pages/Login" element={<Login />} />
           <Route path="/pages/Home" element={<Home />} />
-          <Route path="/pages/Profile/:userID" element={<Profile userID=''/>} />
+          <Route path="/pages/Profile/:userID" element={<Profile/>} />
           <Route path="/pages/PostPreview/:userID/:postID" element={<PostPreview/>}/>
         </Routes>
       </Router>

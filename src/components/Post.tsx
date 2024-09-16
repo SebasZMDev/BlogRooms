@@ -10,12 +10,14 @@ import { useEffect, useState } from 'react';
 import { IDContext, PostData, useUser } from '../App';
 import { getUserInfo } from '../hooks/getUserInfo';
 import { useSave } from '../hooks/useSave';
+import { FaChevronDown } from "react-icons/fa";
+
 
 
 type Props = {
   id: string;
   userID: string;
-  eparent: [PUsername:string, PostID:string] | null;
+  eparent: [UserID:string, PostID:string] | null;
   content: string;
   media: string[] | null;
   score: IDContext[] | null;
@@ -30,11 +32,12 @@ type Props = {
 const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isPostPreviewPage = location.pathname === '/pages/PostPreview';
+  const isPostPreviewPage = location.pathname === `/pages/PostPreview/${userID}/${id}`;
   const isPostProfilePage = location.pathname === `/pages/Profile/${userID}`;
+  const [settingOpen, setSettingOpen] = useState<boolean>(false)
   const {saveCurrentUser, saveUsersList} = useSave();
   const {user, usersList} = useUser();
-  const {getUsername, getUserPFP, getUserThisPost, getUserPosts} = getUserInfo();
+  const { getThisUser, getUsername, getUserPFP, getUserThisPost, getUserPosts} = getUserInfo();
   const postData = getUserThisPost(userID, id)
   const tipo = postData?.postType;
   const [imgPrevDisplay, setImgPrevDisplay] = useState<boolean>(false);
@@ -72,15 +75,15 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
       return;
     }
     const alreadyLiked = postData?.score?.some(
-      (element) => element.PUsername === user?.username && element.PostID === id
+      (element) => element.UserID === user?.id && element.PostID === id
     );
     const alreadyDisliked = postData?.negscore?.some(
-      (element) => element.PUsername === user?.username && element.PostID === id
+      (element) => element.UserID === user?.id && element.PostID === id
     );
     if (alreadyDisliked){
       if (user) {
        const UpdatedList = postData.negscore.filter(
-        (element)=> !(element.PUsername === user.username && element.PostID === id)
+        (element)=> !(element.UserID === user.id && element.PostID === id)
        )
        postData.negscore = UpdatedList
       }
@@ -89,11 +92,11 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
     if (alreadyLiked){
       if (user) {
         const UpdatedList = postData.score.filter(
-          (element) => !(element.PUsername === user.username && element.PostID === id)
+          (element) => !(element.UserID === user.id && element.PostID === id)
         );
         postData.score = UpdatedList;
 
-        const updatedUserLikes = user.userInfo.likes?.filter((like) => !(like.PUsername === user.username && like.PostID === id));
+        const updatedUserLikes = user.userInfo.likes?.filter((like) => !(like.UserID === user.id && like.PostID === id));
         user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
 
         setColorUp(false)
@@ -104,7 +107,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
       }
     }else{
       const newLike: IDContext = {
-        PUsername: user?.username||'',
+        UserID: user?.id||'',
         PostID: id
       }
       if (user){
@@ -128,15 +131,15 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
       return
     }
     const alreadyDisliked = postData.negscore.some(
-      (element)=>element.PUsername === user?.username && element.PostID === id
+      (element)=>element.UserID === user?.id && element.PostID === id
     );
     const alreadyLiked = postData.score.some(
-      (element)=>element.PUsername === user?.username && element.PostID === id
+      (element)=>element.UserID === user?.id && element.PostID === id
     );
     if (alreadyLiked){
       if (user){
         const UpdatedList = postData.score.filter(
-          (element)=>(element.PUsername === user.username && element.PostID === id)
+          (element)=>(element.UserID === user.id && element.PostID === id)
         );
         setColorUp(false)
         postData.score = UpdatedList
@@ -145,7 +148,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
     if (alreadyDisliked){
       if (user) {
         const UpdatedList = postData.negscore.filter(
-          (element) => !(element.PUsername === user.username && element.PostID === id)
+          (element) => !(element.UserID === user.id && element.PostID === id)
         );
         postData.negscore = UpdatedList;
 
@@ -157,7 +160,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
       }
     }else{
       const newDislike: IDContext = {
-        PUsername: user?.username||'',
+        UserID: user?.id||'',
         PostID: id
       }
       if (user){
@@ -166,12 +169,12 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
 
         // quita el like
         const UpdatedList = postData.score.filter(
-          (element) => !(element.PUsername === user.username && element.PostID === id)
+          (element) => !(element.UserID === user.id && element.PostID === id)
         );
         postData.score = UpdatedList;
 
         // quita el like del usuario
-        const updatedUserLikes = user.userInfo.likes?.filter((like) => !(like.PUsername === user.username && like.PostID === id));
+        const updatedUserLikes = user.userInfo.likes?.filter((like) => !(like.UserID === user.id && like.PostID === id));
         user.userInfo.likes = updatedUserLikes?updatedUserLikes:null;
 
         setColorDown(true)
@@ -195,14 +198,12 @@ const Repost = () =>{
         (element)=>(element === user.username)
       );
       const UpdatedPost = getUserPosts(userID)?.filter((element)=>element.postType !== 'repost' && element.id !== `${id}R`)
-      console.log(UpdatedPost)
       user.userInfo.posts = UpdatedPost?UpdatedPost:user.userInfo.posts;
       setReposted(false)
       postData.repost = UpdatedRepost
       saveCurrentUser(user);
       const updatedRepost = usersList?.map((item) => item.id === user.id ? user : item) || [];
       saveUsersList(updatedRepost);
-      console.log('ya reposteado')
     }else{
         getUserPosts(userID)?.map((element)=>{
           if (element.id == postData?.id) {
@@ -211,7 +212,6 @@ const Repost = () =>{
             newRepost.id += 'R'
             postData.repost = [...postData.repost, userID]
             user.userInfo.posts = [...user.userInfo.posts, newRepost]
-            console.log('Recien posteado')
           }
         })
         setReposted(true)
@@ -222,6 +222,10 @@ const Repost = () =>{
       }
     }
   }
+}
+
+const OpenPostStngs = () => {
+  setSettingOpen(!settingOpen)
 }
 
 const DeletePost = () => {
@@ -242,13 +246,23 @@ const DeletePost = () => {
   }
 };
 
+const ClearLikes = () => {
+  const Post = getUserPosts(userID)?.find((element) => element.id == id);
+  if (Post && Post.score) {
+    Post.score.map((element)=>{
+      getThisUser(element.UserID)
+    });
+  }
+}
+
+
 useEffect(() => {
   if (postData && user) {
     const Liked = postData.score?.some(
-      (element) => element.PUsername === user.username && element.PostID === id
+      (element) => element.UserID === user.id && element.PostID === id
     );
     const Disliked = postData.negscore?.some(
-      (element) => element.PUsername === user.username && element.PostID === id
+      (element) => element.UserID === user.id && element.PostID === id
     );
     setColorUp(!!Liked);
     setColorDown(!!Disliked);
@@ -262,11 +276,16 @@ useEffect(() => {
       <img className='post-pfp' src={getUserPFP(user?.id || '')} />
     </div>
     <div className='post-username'>
-      <h4>{getUsername(user?.id || '')}</h4>
+      <h4 onClick={ClearLikes}>{getUsername(user?.id || '')}</h4>
       <h5>{tipo=='repost'?'Repost':''}</h5>
       <div style={{display:'flex', justifyContent:'end', gridGap:'10px'}}>
         <h6>{fecha}</h6>
-        <button onClick={(e)=>{e.stopPropagation(); DeletePost();}}></button>
+        <div className='relative'>
+          <FaChevronDown className='post-stngs' onClick={(e)=>{e.stopPropagation(); OpenPostStngs();}}/>
+          <span className='post-stngs-bg' style={{display:settingOpen?'':'none'}}>
+            <ul className='post-stngs-item' onClick={(e)=>{e.stopPropagation(); DeletePost();}}>Borrar</ul>
+          </span>
+        </div>
       </div>
     </div>
   </div>
