@@ -899,3 +899,53 @@ textarea {
     color: #FDFD96;
     border-radius: 5px;
 }
+
+.subscreen-container{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.subscreen-bg{
+    width: 100%;
+    height: 100%;
+    background-color: #202020;
+    opacity: 90%;
+    position: absolute;
+}
+
+.subscreen-div{
+    width: 70%;
+    height: 40%;
+    padding: 10px;
+    background-color: #202020;
+    border: 2px solid black;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: 50% 50%;
+    position: relative;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+
+}
+
+.subscreen-text{
+    font-size: 20px;
+    color: white;
+}
+
+.subscreen-btn{
+    width: 30%;
+    height: 40%;
+    border: #e6d7c3 1px solid;
+    border-radius: 5px;
+    padding: 10px;
+}

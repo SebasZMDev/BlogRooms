@@ -11,6 +11,7 @@ import { IDContext, PostData, useUser } from '../App';
 import { getUserInfo } from '../hooks/getUserInfo';
 import { useSave } from '../hooks/useSave';
 import { FaChevronDown } from "react-icons/fa";
+import SubScreen from './subScreen';
 
 
 
@@ -45,7 +46,8 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
   const [coloUp, setColorUp] = useState<boolean>(false);
   const [colorDown, setColorDown] = useState<boolean>(false);
   const [RePosted, setReposted] = useState<boolean>(false);
-
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [modalMsg, setModalMsg] = useState<string>('');
 
   const Preview = () => {
     if (!isPostPreviewPage) {
@@ -204,6 +206,8 @@ const Repost = () =>{
       saveCurrentUser(user);
       const updatedRepost = usersList?.map((item) => item.id === user.id ? user : item) || [];
       saveUsersList(updatedRepost);
+      setOpenModal(true)
+      setModalMsg('Reposteado con exito')
     }else{
         getUserPosts(userID)?.map((element)=>{
           if (element.id == postData?.id) {
@@ -323,9 +327,11 @@ useEffect(() => {
     </div>
     <IoMdShare className='post-buttons' />
   </div>
+  <div onClick={(e)=>{e.stopPropagation();}}>
+  <SubScreen Displ={openModal} Msg={modalMsg}/>
+  </div>
   {imgPrevDisplay && <ImgPreview imgSrc={imgSrc} closeImg={CloseImgPreview} />}
 </div>
-
   );
 };
 
