@@ -8,6 +8,8 @@ import GifHandle from './GifHandle';
 import {useSave} from '../hooks/useSave'
 import { getUserInfo } from '../hooks/getUserInfo';
 import { IoMdClose } from "react-icons/io";
+import SubScreen from './SubScreen';
+
 
 const CreatePost = () => {
     const {user, isUserLogged, usersList} = useUser();
@@ -17,6 +19,8 @@ const CreatePost = () => {
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
     const [gifDisplay, setGifDisplay] = useState<boolean>(false)
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [modalMsg, setModalMsg] = useState<string>('');
     const HandleChanges = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (input.length < 295) {
             setInput(e.target.value);
@@ -84,6 +88,8 @@ const CreatePost = () => {
             const updatedList = usersList?.map(item =>
             item.id === user?.id ? user : item) || [];
             saveUsersList(updatedList)
+            setOpenModal(true)
+            setModalMsg('Se Posteo Correctamente')
           }
     }
 
@@ -135,6 +141,9 @@ const CreatePost = () => {
                     <button className='crp-btn' onClick={SubmitPost}>
                         Post
                     </button>
+                </div>
+                <div onClick={(e)=>{e.stopPropagation();}}>
+                    <SubScreen Msg={modalMsg} Displ={openModal} />
                 </div>
                 <GifHandle isDisplay={gifDisplay} onClose={handleGifClose} selectGif={handleSelectGif}/>
             </div>

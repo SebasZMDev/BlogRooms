@@ -5,6 +5,7 @@ import { TiArrowRightThick } from "react-icons/ti";
 import { PostData, useUser } from '../App';
 import {useSave} from '../hooks/useSave'
 import { getUserInfo } from '../hooks/getUserInfo';
+import SubScreen from './SubScreen';
 
 
 type Props = {
@@ -18,7 +19,8 @@ const CommentPost = ({parentInfo}:Props) => {
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
-
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [modalMsg, setModalMsg] = useState<string>('');
     const HandleChanges = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (input.length < 295) {
             setInput(e.target.value);
@@ -74,6 +76,8 @@ const CommentPost = ({parentInfo}:Props) => {
             fecha: Fecha,
             postType: 'comment'
         };
+        setOpenModal(true)
+        setModalMsg('Comentario posteado!')
         if (parentInfo) {
             const updatedList = usersList?.map((usuario) => {
                 if (usuario.id === getUsername(parentInfo[0])) {
@@ -122,6 +126,9 @@ const CommentPost = ({parentInfo}:Props) => {
                     {}
                 </div>
                 <h5>{limite}</h5>
+            </div>
+            <div onClick={(e)=>{e.stopPropagation();}}>
+                <SubScreen Msg={modalMsg} Displ={openModal} />
             </div>
         </div>
     )

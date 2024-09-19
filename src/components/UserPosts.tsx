@@ -1,5 +1,5 @@
 import "./ComStyles.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Post from "../components/Post";
 import { useUser } from "../App";
 import { getUserInfo } from "../hooks/getUserInfo";
@@ -15,7 +15,7 @@ const UserPosts = () => {
   const { userID } = useParams();  // Obtén el userID desde la URL
   const thisUser = getThisUser(userID?userID:'');
   const thisLikes = thisUser?.userInfo.likes
-  const Likes2 = thisLikes?.map((element) => {
+  const LikesMaped = thisLikes?.map((element) => {
     return getUserThisPost(thisUser?.id||'', element.PostID);
   });
 
@@ -86,8 +86,8 @@ const UserPosts = () => {
                 comments={post.comments}
               />
             ))}
-            {/* {btnPress === 3 &&
-              thisLikes?.map((element) => (
+            {btnPress === 3 &&
+              LikesMaped?.map((element) => (
                 element?
                 <Post
                   key={element.id}
@@ -102,7 +102,7 @@ const UserPosts = () => {
                   repost={element.repost}
                   comments={element.comments}
                 />:''
-              ))} */}
+              ))}
       </div>
     </div>
   );

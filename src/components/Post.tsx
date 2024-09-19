@@ -11,7 +11,7 @@ import { IDContext, PostData, useUser } from '../App';
 import { getUserInfo } from '../hooks/getUserInfo';
 import { useSave } from '../hooks/useSave';
 import { FaChevronDown } from "react-icons/fa";
-import SubScreen from './subScreen';
+import SubScreen from './SubScreen';
 
 
 
@@ -206,8 +206,6 @@ const Repost = () =>{
       saveCurrentUser(user);
       const updatedRepost = usersList?.map((item) => item.id === user.id ? user : item) || [];
       saveUsersList(updatedRepost);
-      setOpenModal(true)
-      setModalMsg('Reposteado con exito')
     }else{
         getUserPosts(userID)?.map((element)=>{
           if (element.id == postData?.id) {
@@ -223,6 +221,8 @@ const Repost = () =>{
         const updatedList = usersList?.map(item =>
         item.id === user?.id ? user : item) || [];
         saveUsersList(updatedList)
+        setOpenModal(true)
+        setModalMsg('Reposteado con exito')
       }
     }
   }
@@ -268,8 +268,12 @@ useEffect(() => {
     const Disliked = postData.negscore?.some(
       (element) => element.UserID === user.id && element.PostID === id
     );
+    const Reposted = postData.repost?.some(
+      (element) => element === user.id
+    );
     setColorUp(!!Liked);
     setColorDown(!!Disliked);
+    setReposted(!!Reposted);
   }
 }, [postData, user]);
 
@@ -328,7 +332,7 @@ useEffect(() => {
     <IoMdShare className='post-buttons' />
   </div>
   <div onClick={(e)=>{e.stopPropagation();}}>
-  <SubScreen Displ={openModal} Msg={modalMsg}/>
+    <SubScreen Msg={modalMsg} Displ={openModal} />
   </div>
   {imgPrevDisplay && <ImgPreview imgSrc={imgSrc} closeImg={CloseImgPreview} />}
 </div>

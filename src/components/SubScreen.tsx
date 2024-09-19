@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './ComStyles.css'
 
 type Props = {
@@ -9,15 +9,16 @@ type Props = {
 const SubScreen = ({Msg, Displ}: Props) => {
 
     const [Mensaje, setMensaje] = useState('');
-    const [Display, setDisplay] = useState<boolean>();
-    ()=>{
-        setMensaje(Msg)
-        setDisplay(Displ)
-    }
+    const [Display, setDisplay] = useState<boolean>(true);
 
     const Cerrar = () =>{
-        setDisplay(false)
+        setDisplay(!Display)
     }
+
+    useEffect(()=>{
+        setMensaje(Msg)
+        setDisplay(Displ)
+    },[Displ])
 
     return (
         <div className='subscreen-container' style={{display:Display?'':'none'}}>
