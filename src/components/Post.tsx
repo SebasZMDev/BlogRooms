@@ -259,17 +259,6 @@ const ClearLikes = () => {
   }
 }
 
-const BotsListPFP = (ID: string) => {
-  const user = BotsList?.find(element => element.id === ID);
-  return user?.userInfo.pfp;
-}
-
-const BotsListName = (ID: string) => {
-    const user = BotsList?.find(element => element.id === ID);
-    return user?.username;
-}
-
-
 useEffect(() => {
   if (postData && user) {
     const Liked = postData.score?.some(
@@ -291,10 +280,10 @@ useEffect(() => {
 <div className='post-container' onClick={Preview}>
   <div className='post-display-top'>
     <div style={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}>
-      <img className='post-pfp' src={getUserPFP(userID)?getUserPFP(userID):BotsListPFP(userID)} />
+      <img className='post-pfp' src={getUserPFP(userID)} />
     </div>
     <div className='post-username'>
-      <h4 onClick={ClearLikes}>{getUsername(userID)?getUsername(userID):BotsListName(userID)}</h4>
+      <h4 onClick={ClearLikes}>{getUsername(userID)}</h4>
       <h5>{tipo=='repost'?'Repost':''}</h5>
       <div style={{display:'flex', justifyContent:'end', gridGap:'10px'}}>
         <h6>{fecha}</h6>

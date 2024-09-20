@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import PostPreview from './pages/PostPreview';
+import { BotsList } from './components/Extra';
 
 export type UserType = {
   id: string;
@@ -64,7 +65,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
     if (savedList) {
       const parsedList = JSON.parse(savedList);
-      setUsersList(parsedList)
+      const FinalList = [...BotsList, ...parsedList]
+      setUsersList(FinalList)
     }
   }, []);
   return (

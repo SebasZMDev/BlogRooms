@@ -7,7 +7,7 @@ import { useUser } from '../App';
 
 
 const NavBar = () => {
-  const {user, setUser, isUserLogged, setIsUserLogged} = useUser();
+  const {user, setUser, usersList, isUserLogged, setIsUserLogged} = useUser();
   const [rotacion, setRotacion] = useState<number>(0);
   const [cooldown, setCooldown] = useState<boolean>(false);
   const [menuAbierto,setMenuAbierto] = useState<boolean>(false);
@@ -69,7 +69,7 @@ const NavBar = () => {
 
       {isUserLogged ? (
         <div className='nv-user-buttons-display'>
-          <FaBell color='#FDFD96' className='nv-user-button nv-bell cursor'/>
+          <FaBell color='#FDFD96' className='nv-user-button nv-bell cursor' onClick={()=>{console.log(user)}}/>
           <Link to={`/pages/Profile/${user?.id}`}>
             <h5 className='nv-user-name'>{user?.username}</h5>
           </Link>

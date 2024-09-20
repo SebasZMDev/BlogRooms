@@ -1,11 +1,13 @@
+import { useUser } from '../App';
 import './ComStyles.css';
 import { BotsList } from './Extra';
 import Post from './Post';
 
 const UserFeed = () => {
   // Usar flatMap para aplanar los arrays de posts
-  const Feed = BotsList.flatMap((element) => element.userInfo.posts);
-
+  const {usersList} = useUser();
+  const Feed = usersList?.flatMap((element) => element.userInfo.posts);
+  console.log(usersList)
   return (
     <div className='uf-container' onClick={()=>console.log(Feed)}>
       {Feed &&
