@@ -7,7 +7,7 @@ const user1: UserType = {
     username: 'Han Solo',
     password: 'contraseñaaaaa',
     userInfo: {
-        pfp: "/images/default-pfp.jpg",
+        pfp: "/images/han-solo.jpg",
         banner: "/images/default-banner.jpg",
         description: "",
         posts: [
@@ -36,7 +36,7 @@ const user2: UserType = {
     username: 'GatosFan',
     password: 'contraseñaaaaa',
     userInfo: {
-        pfp: "/images/default-pfp.jpg",
+        pfp: "/images/foto-gato.jpeg",
         banner: "/images/default-banner.jpg",
         description: "",
         posts: [
@@ -91,7 +91,7 @@ const user3: UserType = {
     username: 'Adolfo',
     password: 'contraseñaaaaa',
     userInfo: {
-        pfp: "/images/default-pfp.jpg",
+        pfp: "/images/landscape.jpg",
         banner: "/images/default-banner.jpg",
         description: "",
         posts: [
@@ -146,7 +146,7 @@ const user4: UserType = {
     username: 'Vault Boy',
     password: 'contraseñaaaaa',
     userInfo: {
-        pfp: "/images/default-pfp.jpg",
+        pfp: "/images/vault-boy.jpg",
         banner: "/images/default-banner.jpg",
         description: "",
         posts: [

@@ -70,7 +70,7 @@ const NavBar = () => {
       {isUserLogged ? (
         <div className='nv-user-buttons-display'>
           <FaBell color='#FDFD96' className='nv-user-button nv-bell cursor'/>
-          <Link to="/pages/Profile">
+          <Link to={`/pages/Profile/${user?.id}`}>
             <h5 className='nv-user-name'>{user?.username}</h5>
           </Link>
           <div className='nv-mini-menu'>

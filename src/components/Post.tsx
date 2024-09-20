@@ -12,7 +12,7 @@ import { getUserInfo } from '../hooks/getUserInfo';
 import { useSave } from '../hooks/useSave';
 import { FaChevronDown } from "react-icons/fa";
 import SubScreen from './SubScreen';
-
+import { BotsList } from './Extra';
 
 
 type Props = {
@@ -259,6 +259,16 @@ const ClearLikes = () => {
   }
 }
 
+const BotsListPFP = (ID: string) => {
+  const user = BotsList?.find(element => element.id === ID);
+  return user?.userInfo.pfp;
+}
+
+const BotsListName = (ID: string) => {
+    const user = BotsList?.find(element => element.id === ID);
+    return user?.username;
+}
+
 
 useEffect(() => {
   if (postData && user) {
@@ -281,10 +291,10 @@ useEffect(() => {
 <div className='post-container' onClick={Preview}>
   <div className='post-display-top'>
     <div style={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}>
-      <img className='post-pfp' src={getUserPFP(user?.id || '')} />
+      <img className='post-pfp' src={getUserPFP(userID)?getUserPFP(userID):BotsListPFP(userID)} />
     </div>
     <div className='post-username'>
-      <h4 onClick={ClearLikes}>{getUsername(user?.id || '')}</h4>
+      <h4 onClick={ClearLikes}>{getUsername(userID)?getUsername(userID):BotsListName(userID)}</h4>
       <h5>{tipo=='repost'?'Repost':''}</h5>
       <div style={{display:'flex', justifyContent:'end', gridGap:'10px'}}>
         <h6>{fecha}</h6>
