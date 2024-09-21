@@ -16,10 +16,8 @@ const UserPosts = () => {
   const thisUser = getThisUser(userID?userID:'');
   const thisLikes = thisUser?.userInfo.likes
   const LikesMaped = thisLikes?.map((element) => {
-    console.log(element.UserID)
     return getUserThisPost(thisUser?.id||'', element.PostID);
   });
-  console.log(LikesMaped)
 
   const ButtonPressed = (index: number) => {
     setBtnPress(index);

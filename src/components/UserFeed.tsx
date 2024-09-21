@@ -7,9 +7,8 @@ const UserFeed = () => {
   // Usar flatMap para aplanar los arrays de posts
   const {usersList} = useUser();
   const Feed = usersList?.flatMap((element) => element.userInfo.posts);
-  console.log(usersList)
   return (
-    <div className='uf-container' onClick={()=>console.log(Feed)}>
+    <div className='uf-container'>
       {Feed &&
         Feed.map((post) => (
           <Post

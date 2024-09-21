@@ -12,7 +12,6 @@ import { getUserInfo } from '../hooks/getUserInfo';
 import { useSave } from '../hooks/useSave';
 import { FaChevronDown } from "react-icons/fa";
 import SubScreen from './SubScreen';
-import { BotsList } from './Extra';
 
 
 type Props = {
@@ -48,6 +47,7 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
   const [RePosted, setReposted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [modalMsg, setModalMsg] = useState<string>('');
+  const [repostName, setRepostName] = useState<string>('');
 
   const Preview = () => {
     if (!isPostPreviewPage) {
@@ -192,9 +192,19 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
 const Repost = () =>{
   if (user && postData){
     if (postData.postType=='repost'){
-      return
+      const UpdatedRepost = postData.repost.filter(
+        (element)=>(element === user.username)
+      );
+      const UpdatedPost = getUserPosts(userID)?.filter((element)=>element.postType !== 'repost' && element.id !== `${id}R`)
+      user.userInfo.posts = UpdatedPost?UpdatedPost:user.userInfo.posts;
+      setReposted(false)
+      postData.repost = UpdatedRepost
+      saveCurrentUser(user);
+      const updatedRepost = usersList?.map((item) => item.id === user.id ? user : item) || [];
+      saveUsersList(updatedRepost);
     }else{
       const AlreadyReposted = postData?.repost.some((element)=>element == user.id)
+      console.log(postData.repost,user.id)
     if (AlreadyReposted){
       const UpdatedRepost = postData.repost.filter(
         (element)=>(element === user.username)
@@ -211,9 +221,11 @@ const Repost = () =>{
           if (element.id == postData?.id) {
             const newRepost = { ...element }
             newRepost.postType = 'repost'
-            newRepost.id += 'R'
-            postData.repost = [...postData.repost, userID]
+            newRepost.id += 'R' + element.repost.length
+            postData.repost = [...postData.repost, user.id]
             user.userInfo.posts = [...user.userInfo.posts, newRepost]
+            setRepostName(user.username)
+            console.log(newRepost)
           }
         })
         setReposted(true)
@@ -227,6 +239,8 @@ const Repost = () =>{
     }
   }
 }
+
+
 
 const OpenPostStngs = () => {
   setSettingOpen(!settingOpen)
@@ -273,6 +287,7 @@ useEffect(() => {
     setColorUp(!!Liked);
     setColorDown(!!Disliked);
     setReposted(!!Reposted);
+    console.log(tipo)
   }
 }, [postData, user]);
 
@@ -284,7 +299,7 @@ useEffect(() => {
     </div>
     <div className='post-username'>
       <h4 onClick={ClearLikes}>{getUsername(userID)}</h4>
-      <h5>{tipo=='repost'?'Repost':''}</h5>
+      <h5>{tipo=='repost'?`repost by ${tipo}`:''}</h5>
       <div style={{display:'flex', justifyContent:'end', gridGap:'10px'}}>
         <h6>{fecha}</h6>
         <div className='relative'>

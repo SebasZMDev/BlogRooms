@@ -65,8 +65,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
     if (savedList) {
       const parsedList = JSON.parse(savedList);
-      const FinalList = [...BotsList, ...parsedList]
-      setUsersList(FinalList)
+      setUsersList(parsedList)
     }
   }, []);
   return (
