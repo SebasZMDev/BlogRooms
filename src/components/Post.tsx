@@ -22,6 +22,7 @@ type Props = {
   media: string[] | null;
   score: IDContext[] | null;
   negscore: IDContext[] | null,
+  repostedBy?: string;
   repost: string[];
   comments: PostData[];
   fecha: string;
@@ -47,7 +48,6 @@ const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: 
   const [RePosted, setReposted] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [modalMsg, setModalMsg] = useState<string>('');
-  const [repostName, setRepostName] = useState<string>('');
 
   const Preview = () => {
     if (!isPostPreviewPage) {
@@ -204,7 +204,6 @@ const Repost = () =>{
       saveUsersList(updatedRepost);
     }else{
       const AlreadyReposted = postData?.repost.some((element)=>element == user.id)
-      console.log(postData.repost,user.id)
     if (AlreadyReposted){
       const UpdatedRepost = postData.repost.filter(
         (element)=>(element === user.username)
@@ -221,11 +220,10 @@ const Repost = () =>{
           if (element.id == postData?.id) {
             const newRepost = { ...element }
             newRepost.postType = 'repost'
-            newRepost.id += 'R' + element.repost.length
+            newRepost.repostedBy = user.username
+            newRepost.id =  "R" + user.id
             postData.repost = [...postData.repost, user.id]
             user.userInfo.posts = [...user.userInfo.posts, newRepost]
-            setRepostName(user.username)
-            console.log(newRepost)
           }
         })
         setReposted(true)
@@ -273,6 +271,7 @@ const ClearLikes = () => {
   }
 }
 
+
 useEffect(() => {
   if (postData && user) {
     const Liked = postData.score?.some(
@@ -287,7 +286,6 @@ useEffect(() => {
     setColorUp(!!Liked);
     setColorDown(!!Disliked);
     setReposted(!!Reposted);
-    console.log(tipo)
   }
 }, [postData, user]);
 
@@ -299,7 +297,7 @@ useEffect(() => {
     </div>
     <div className='post-username'>
       <h4 onClick={ClearLikes}>{getUsername(userID)}</h4>
-      <h5>{tipo=='repost'?`repost by ${tipo}`:''}</h5>
+      <h5>{tipo=='repost'?`repost by ${postData?.repostedBy}`:''}</h5>
       <div style={{display:'flex', justifyContent:'end', gridGap:'10px'}}>
         <h6>{fecha}</h6>
         <div className='relative'>

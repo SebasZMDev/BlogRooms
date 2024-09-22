@@ -30,6 +30,7 @@ export type PostData = {
   score: IDContext[] | null;
   negscore: IDContext[] | null;
   repost: string[];
+  repostedBy?: string;
   comments: PostData[];
   fecha: string;
   postType: string;
