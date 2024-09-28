@@ -1,6 +1,5 @@
 import { useUser } from '../App';
 import './ComStyles.css';
-import { BotsList } from './Extra';
 import Post from './Post';
 
 const UserFeed = () => {
@@ -10,9 +9,9 @@ const UserFeed = () => {
   return (
     <div className='uf-container'>
       {Feed &&
-        Feed.map((post) => (
+        Feed.map((post, index) => (
           <Post
-            key={post.id}
+            key={post.id+index}
             id={post.id}
             eparent={post.eparent}
             userID={post.userID}

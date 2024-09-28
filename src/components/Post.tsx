@@ -193,7 +193,7 @@ const Repost = () =>{
   if (user && postData){
     if (postData.postType=='repost'){
       const UpdatedRepost = postData.repost.filter(
-        (element)=>(element === user.username)
+        (element)=>(element !== user.id)
       );
       const UpdatedPost = getUserPosts(userID)?.filter((element)=>element.postType !== 'repost' && element.id !== `${id}R`)
       user.userInfo.posts = UpdatedPost?UpdatedPost:user.userInfo.posts;
@@ -206,7 +206,7 @@ const Repost = () =>{
       const AlreadyReposted = postData?.repost.some((element)=>element == user.id)
     if (AlreadyReposted){
       const UpdatedRepost = postData.repost.filter(
-        (element)=>(element === user.username)
+        (element)=>(element !== user.id)
       );
       const UpdatedPost = getUserPosts(userID)?.filter((element)=>element.postType !== 'repost' && element.id !== `${id}R`)
       user.userInfo.posts = UpdatedPost?UpdatedPost:user.userInfo.posts;
@@ -216,16 +216,16 @@ const Repost = () =>{
       const updatedRepost = usersList?.map((item) => item.id === user.id ? user : item) || [];
       saveUsersList(updatedRepost);
     }else{
-        getUserPosts(userID)?.map((element)=>{
-          if (element.id == postData?.id) {
-            const newRepost = { ...element }
-            newRepost.postType = 'repost'
-            newRepost.repostedBy = user.username
-            newRepost.id =  "R" + user.id
-            postData.repost = [...postData.repost, user.id]
-            user.userInfo.posts = [...user.userInfo.posts, newRepost]
-          }
-        })
+      getUserPosts(userID)?.map((element)=>{
+        if (element.id == postData?.id) {
+          const newRepost = {...element}
+          newRepost.postType = 'repost'
+          newRepost.repostedBy = user.username
+          postData.repost = [...postData.repost, user.id]
+          user.userInfo.posts = [...user.userInfo.posts, newRepost]
+          console.log(newRepost)
+        }
+      })
         setReposted(true)
         saveCurrentUser(user)
         const updatedList = usersList?.map(item =>
@@ -271,7 +271,6 @@ const ClearLikes = () => {
   }
 }
 
-
 useEffect(() => {
   if (postData && user) {
     const Liked = postData.score?.some(
@@ -290,7 +289,7 @@ useEffect(() => {
 }, [postData, user]);
 
   return (
-<div className='post-container' onClick={Preview}>
+<div className='post-container' onClick={()=>console.log(postData)}>
   <div className='post-display-top'>
     <div style={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}>
       <img className='post-pfp' src={getUserPFP(userID)} />
@@ -335,7 +334,7 @@ useEffect(() => {
     </div>
     <div className='post-score'>
       <IoMdRepeat style={RePosted?{color: 'green'}:{}} onClick={(e)=>{e.stopPropagation(); Repost();}} className='post-buttons' />
-      <h4>{repost ? repost.length : 0}</h4>
+      <h4>{postData?.repost ? postData?.repost.length : 0}</h4>
     </div>
     <div className='post-score'>
       <FaComment className='post-buttons' />

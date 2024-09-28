@@ -80,6 +80,7 @@ const Login = () => {
         banner: "/images/default-banner.jpg",
         description: "",
         posts: [],
+        reposts: [],
         likes: []
       }
     };

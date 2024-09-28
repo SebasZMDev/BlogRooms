@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import PostPreview from './pages/PostPreview';
-import { BotsList } from './components/Extra';
+
 
 export type UserType = {
   id: string;
@@ -17,6 +17,7 @@ export type UserType = {
     banner:string;
     description: string;
     posts: PostData[];
+    reposts: IDContext[] | null;
     likes: IDContext[] | null;
   };
 };
