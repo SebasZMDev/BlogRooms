@@ -7,13 +7,12 @@ import { useUser } from '../App';
 
 
 const NavBar = () => {
-  const {user, setUser, usersList, isUserLogged, setIsUserLogged} = useUser();
+  const {user, setUser, isUserLogged, setIsUserLogged} = useUser();
   const [rotacion, setRotacion] = useState<number>(0);
   const [cooldown, setCooldown] = useState<boolean>(false);
   const [menuAbierto,setMenuAbierto] = useState<boolean>(false);
   const navigate = useNavigate();
   const AbrirMenu = () => {setMenuAbierto(!menuAbierto)}
-  const userID = user?.id
   const RotacionInfinita = () => {
     if (cooldown) return;
     setRotacion(prevRotacion => prevRotacion + 90);
@@ -24,13 +23,14 @@ const NavBar = () => {
     setTimeout(() => setCooldown(false), 750);
   };
 
-  const toUserProfile = () => {
-    navigate(`/pages/Profile/${user?.id}`),{
-      state: {
-        userID
-      }
-    };
-  }
+  const toUserProfile = (ThisID:string) => {
+    navigate(`/pages/Profile/${ThisID}`, {
+        state: {
+            ThisID,
+        }
+      })
+}
+
 
   const CerrarSesion = () =>{
     setUser(null)
@@ -70,13 +70,11 @@ const NavBar = () => {
       {isUserLogged ? (
         <div className='nv-user-buttons-display'>
           <FaBell color='#FDFD96' className='nv-user-button nv-bell cursor'/>
-          <Link to={`/pages/Profile/${user?.id}`}>
-            <h5 className='nv-user-name'>{user?.username}</h5>
-          </Link>
+          <h5 onClick={()=>toUserProfile(user?user.id:'')} className='nv-user-name'>{user?.username}</h5>
           <div className='nv-mini-menu'>
             <img onClick={AbrirMenu} className='nv-user-button nv-pfp cursor' src={user?user.userInfo.pfp:''}/>
             <span className='nv-user-config' style={menuAbierto? {}:{display:'none'}}>
-            <ul onClick={toUserProfile}>Perfil</ul>
+            <ul onClick={()=>toUserProfile(user?user.id:'')}>Perfil</ul>
             <ul onClick={CerrarSesion}>Cerrar Sesion</ul>
             </span>
           </div>

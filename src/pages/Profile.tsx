@@ -4,12 +4,21 @@ import Frases from '../components/Frases';
 import UserProfile from '../components/UserProfile';
 import UserPosts from '../components/UserPosts';
 import { useState, useEffect } from 'react';
-
+import { useLocation } from 'react-router-dom';
 
 const Profile = () =>{
+  const location = useLocation();
+    const state = location.state;
+    const [UserID, setUserID] = useState('');
 
     const [removeCharge, setRemoveCharge] = useState<boolean>(false);
     useEffect(()=>{
+        if (state) {
+          console.log(location.state)
+          setUserID(location.state.ThisID);
+        }else {
+          return
+        }
         setTimeout(() => {
           setRemoveCharge(true)
         }, 2000);
@@ -38,7 +47,7 @@ const Profile = () =>{
             <main>
               <Frases/>
                 <div className='user-profile-display'>
-                  <UserProfile/>
+                  <UserProfile UserID={UserID}/>
                   <UserPosts/>
                 </div>
                 <Frases/>

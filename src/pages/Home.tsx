@@ -2,6 +2,7 @@ import '../styles/Home.css'
 import NavBar from '../components/NavBar';
 import Frases from '../components/Frases';
 import CreatePost from '../components/CreatePost';
+import UsersPanel from '../components/UsersPanel'
 import UserFeed  from '../components/UserFeed';
 import { useEffect, useState } from 'react';
 
@@ -46,7 +47,7 @@ const Home = () => {
 
           </UserFeed>
         </div>
-        <Frases/>
+        <UsersPanel/>
       </main>
     </div>
   )

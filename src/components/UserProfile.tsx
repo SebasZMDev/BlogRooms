@@ -4,17 +4,22 @@ import { useState } from 'react';
 import { IoMdSave } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import {useSave} from '../hooks/useSave'
+import { getUserInfo } from '../hooks/getUserInfo';
 
+type Props = {
+  UserID: string;
+}
 
-const UserProfile = () => {
+const UserProfile = ({UserID}: Props) => {
     const {user, usersList} = useUser();
+    const {getThisUser} = getUserInfo();
     const {saveCurrentUser, saveUsersList} = useSave();
     const [editMode, setEditMode]=useState<boolean>(false);
     const [newDesc, setNewDesc]=useState<string>(user?.userInfo.description || '')
     const [savedPFP, setSavedPFP]=useState<string>('')
     const [savedBanner, setSavedBanner]=useState<string>('')
     const [prevIMG, setPrevIMG]=useState<string>('')
-
+    const ThisUser = getThisUser(UserID);
 
     const EnableEditMode = () => {
       setNewDesc(user?.userInfo.description||'')
@@ -80,23 +85,20 @@ const UserProfile = () => {
     const ChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setNewDesc(e.target.value)
     };
-
-
-
-
+    
     return (
       <div className="up-general-container">
         <>
           <div className='relative'>
-            {editMode?(<img className="up-banner" src={user?user.userInfo.banner:""} />)
-            :(<img className="up-banner" src={prevIMG?prevIMG:user?user.userInfo.banner:''} />)}
+            {editMode?(<img className="up-banner" src={ThisUser?ThisUser.userInfo.banner:""} />)
+            :(<img className="up-banner" src={prevIMG?prevIMG:ThisUser?ThisUser.userInfo.banner:''} />)}
             <div className='edit-up-banner-text' style={{display:editMode?'':'none'}}><h5>Cambiar Banner</h5></div>
             <input onChange={(e)=>handleIMGChange('banner',e)} accept="image/png, image/jpeg, image/jpg" className="edit-up-banner" type='File' style={{display:editMode?'':'none'}}/>
             </div>
             <div className="up-pfp-container">
               <div className='relative'>
-              {editMode?(<img className="up-pfp" src={user?user.userInfo.pfp:""} />)
-              :(<img className="up-pfp" src={prevIMG?prevIMG:user?user.userInfo.pfp:""} />)}
+              {editMode?(<img className="up-pfp" src={ThisUser?ThisUser.userInfo.pfp:""} />)
+              :(<img className="up-pfp" src={prevIMG?prevIMG:ThisUser?ThisUser.userInfo.pfp:""} />)}
                 <div className='edit-up-pfp-text' style={{display:editMode?'':'none'}}>
                     <h5>Cambiar Foto</h5>
                 </div>
@@ -108,12 +110,12 @@ const UserProfile = () => {
                 <IoMdClose onClick={CancelChanges} className='up-edit-buttons'/>
               </div>)
               :
-            (<button className="up-edit-btn" onClick={EnableEditMode}>Editar Perfil</button>)}
+            (<button style={{display:ThisUser?.id==user?.id?'':'none'}} className="up-edit-btn" onClick={EnableEditMode}>Editar Perfil</button>)}
             </div>
-            <h4 className="up-username">{user ? user.username : ""}</h4>
+            <h4 className="up-username">{ThisUser ? ThisUser.username : ""}</h4>
             <div className='relative'>
                 <h5 className="up-desc">
-                    {user ? user.userInfo.description : newDesc}
+                    {ThisUser ? ThisUser.userInfo.description : newDesc}
                 </h5>
                 <textarea name='change-description' onChange={(e)=>ChangeDesc(e)} className="edit-up-desc" value={newDesc}  style={{display:editMode?'':'none'}}/>
             </div>

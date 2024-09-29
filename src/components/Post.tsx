@@ -30,7 +30,7 @@ type Props = {
 
 
 
-const Post = ({ id, userID, eparent, content, media, repost, comments, fecha }: Props) => {
+const Post = ({ id, userID, eparent, content, media, comments, fecha }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === `/pages/PostPreview/${userID}/${id}`;
