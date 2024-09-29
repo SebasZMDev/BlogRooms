@@ -2,20 +2,19 @@ import "../styles/PostPreview.css";
 import NavBar from "../components/NavBar";
 import Frases from "../components/Frases";
 import Post from "../components/Post";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ComentPost from "../components/CommentPost";
 import { getUserInfo } from "../hooks/getUserInfo";
 
 const PostPreview = ({}) => {
-  const location = useLocation();
   const { getUserThisPost } = getUserInfo();
-  const post = location.state;
-  const postData = getUserThisPost(post.userID, post.id);
+  const { userID, postID } = useParams();
+  const postData = getUserThisPost(userID?userID:'', postID?postID:'');
   const ParentPost = getUserThisPost(
     postData?.eparent?.[0] || "",
     postData?.eparent?.[1] || ""
   );
-  if (!post) {
+  if (!postData) {
     return <div>No post data available</div>;
   }
 
@@ -63,7 +62,7 @@ const PostPreview = ({}) => {
             ) : (
               <p>Post not found</p>
             )}
-            <ComentPost parentInfo={[post.userID, post.id]} />
+            <ComentPost parentInfo={[userID?userID:'', postID?postID:'']} />
             {postData?.comments?.slice()
               .reverse().map((element, index) => (
               <div

@@ -85,7 +85,7 @@ const UserProfile = ({UserID}: Props) => {
     const ChangeDesc = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setNewDesc(e.target.value)
     };
-    
+
     return (
       <div className="up-general-container">
         <>

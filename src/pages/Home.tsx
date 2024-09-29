@@ -43,9 +43,7 @@ const Home = () => {
         <Frases/>
         <div className='center-container'>
           <CreatePost/>
-          <UserFeed>
-
-          </UserFeed>
+          <UserFeed/>
         </div>
         <UsersPanel/>
       </main>

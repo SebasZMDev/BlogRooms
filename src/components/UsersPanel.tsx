@@ -7,11 +7,7 @@ const UsersPanel = () =>{
     const {usersList} = useUser();
     const navigate =  useNavigate();
     const toThisProfile = (ThisID:string) => {
-        navigate(`/pages/Profile/${ThisID}`, {
-            state: {
-                ThisID,
-            }
-          })
+        navigate(`/pages/Profile/${ThisID}`)
     }
 
     return (

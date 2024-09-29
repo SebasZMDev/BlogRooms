@@ -958,7 +958,7 @@ textarea {
     display: flex;
     flex-direction: column;
     margin: 15px auto;
-    z-index: 4;
+    z-index: 1;
 }
 
 .listpanel-display {
@@ -967,12 +967,14 @@ textarea {
     grid-template-columns: 30% 70%;
     padding: 10px 0;
     cursor: pointer;
-    border: 0.5px solid #bebe5d;
+    border: 0.5px solid #202020;
+    background-color: #FDFD96;
     transition: all 1s;
 }
 
 .listpanel-display:hover {
     transition: all 0.25s;
+    filter: drop-shadow(0 0 2px #202020);
     background-color: #cfcf7b;
 }
 

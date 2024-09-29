@@ -4,20 +4,19 @@ import Frases from '../components/Frases';
 import UserProfile from '../components/UserProfile';
 import UserPosts from '../components/UserPosts';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const Profile = () =>{
-  const location = useLocation();
-    const state = location.state;
+  const { userID } = useParams();
     const [UserID, setUserID] = useState('');
 
     const [removeCharge, setRemoveCharge] = useState<boolean>(false);
     useEffect(()=>{
-        if (state) {
-          console.log(location.state)
-          setUserID(location.state.ThisID);
+        if (userID) {
+          console.log(userID)
+          setUserID(userID);
         }else {
-          return
+          console.log('wa')
         }
         setTimeout(() => {
           setRemoveCharge(true)

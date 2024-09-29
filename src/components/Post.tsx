@@ -30,7 +30,7 @@ type Props = {
 
 
 
-const Post = ({ id, userID, eparent, content, media, comments, fecha }: Props) => {
+const Post = ({ id, userID, content, media, comments, fecha }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isPostPreviewPage = location.pathname === `/pages/PostPreview/${userID}/${id}`;
@@ -51,13 +51,7 @@ const Post = ({ id, userID, eparent, content, media, comments, fecha }: Props) =
 
   const Preview = () => {
     if (!isPostPreviewPage) {
-      navigate(`/pages/PostPreview/${postData?.userID}/${postData?.id}`, {
-        state: {
-          id,
-          userID,
-          eparent
-        }
-      });
+      navigate(`/pages/PostPreview/${postData?.userID}/${postData?.id}`);
     }
   }
 
@@ -289,7 +283,7 @@ useEffect(() => {
 }, [postData, user]);
 
   return (
-<div className='post-container' onClick={()=>console.log(postData)}>
+<div className='post-container' onClick={Preview}>
   <div className='post-display-top'>
     <div style={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}>
       <img className='post-pfp' src={getUserPFP(userID)} />

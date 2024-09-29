@@ -23,14 +23,9 @@ const NavBar = () => {
     setTimeout(() => setCooldown(false), 750);
   };
 
-  const toUserProfile = (ThisID:string) => {
-    navigate(`/pages/Profile/${ThisID}`, {
-        state: {
-            ThisID,
-        }
-      })
-}
-
+  const toUserProfile = (ThisID: string) => {
+      navigate(`/pages/Profile/${ThisID}`);
+  };
 
   const CerrarSesion = () =>{
     setUser(null)
