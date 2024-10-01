@@ -15,7 +15,7 @@ type Props = {
 const CommentPost = ({parentInfo}:Props) => {
     const {user, setUser, isUserLogged, usersList} = useUser();
     const {saveCurrentUser, saveUsersList} = useSave();
-    const {getUsername, getUserPosts} = getUserInfo();
+    const {getUsername, getUserPosts, getUserThisPost} = getUserInfo();
     const [input, setInput] = useState('')
     const [limite, setLimite] = useState('')
     const [media, setMedia] = useState<string[]>([])
@@ -76,18 +76,24 @@ const CommentPost = ({parentInfo}:Props) => {
             fecha: Fecha,
             postType: 'comment'
         };
-        setOpenModal(true)
-        setModalMsg('Comentario posteado!')
         if (parentInfo) {
+            setOpenModal(true)
+            setModalMsg('Comentario posteado!')
             const updatedList = usersList?.map((usuario) => {
-                if (usuario.id === getUsername(parentInfo[0])) {
+                const ThisPost = getUserThisPost(parentInfo[0],parentInfo[1])
+                if (ThisPost) {
+                    ThisPost.comments = [...ThisPost.comments, newPost];
+                }
+                setUser(usuario)
+                return usuario;
+/*                 if (usuario.id === getUsername(parentInfo[0])) {
                     const post = usuario.userInfo.posts.find((post) => post.id === parentInfo[1]);
                     if (post) {
                         post.comments = [...post.comments, newPost];
                     }
                 }
                 setUser(usuario)
-                return usuario;
+                return usuario; */
             });
             if (updatedList){
                 saveUsersList(updatedList)

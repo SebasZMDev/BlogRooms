@@ -5,6 +5,7 @@ import Post from "../components/Post";
 import { useParams } from "react-router-dom";
 import ComentPost from "../components/CommentPost";
 import { getUserInfo } from "../hooks/getUserInfo";
+import { useEffect } from "react";
 
 const PostPreview = ({}) => {
   const { getUserThisPost } = getUserInfo();
@@ -17,6 +18,7 @@ const PostPreview = ({}) => {
   if (!postData) {
     return <div>No post data available</div>;
   }
+
 
   return (
     <div className="ultra-container">
@@ -63,8 +65,7 @@ const PostPreview = ({}) => {
               <p>Post not found</p>
             )}
             <ComentPost parentInfo={[userID?userID:'', postID?postID:'']} />
-            {postData?.comments?.slice()
-              .reverse().map((element, index) => (
+            {postData?.comments?.map((element, index) => (
               <div
                 className="parent-post-container"
                 key={element.id || `comment-${index}`}
